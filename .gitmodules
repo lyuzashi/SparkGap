@@ -1,0 +1,3 @@
+[submodule "utils/makeEspArduino"]
+	path = utils/makeEspArduino
+	url = https://github.com/plerup/makeEspArduino.git
