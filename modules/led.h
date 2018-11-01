@@ -8,11 +8,12 @@
 class LED {
   public:
     LED(int pinNumber, const char* topicName);
-    void state(int state);
+    void set(int state);
+    uint8_t status();
   private:
     uint8_t pin;
-    const char* topic;
-    const char* setTopic;
-    const char* getTopic;
-    const char* statusTopic;
+    String topic;
+    String setTopic;
+    String getTopic;
+    String statusTopic;
 };

@@ -7,16 +7,15 @@ LED::LED(int pinNumber, const char* topicName) {
   pinMode(pinNumber, OUTPUT);
   pin = pinNumber;
   topic = topicName;
-  // TODO join with "/"
-  setTopic = strcat(strcat(strcat(TOP_LEVEL, SET), NAME), topicName);
-  getTopic = strcat(strcat(strcat(TOP_LEVEL, GET), NAME), topicName);
-  statusTopic = strcat(strcat(strcat(TOP_LEVEL, STATUS), NAME), topicName);
+  setTopic = String(TOP_LEVEL) + "/" + String(SET) + "/" + String(NAME) + "/" + topicName;
+  getTopic = String(TOP_LEVEL) + "/" + String(GET) + "/" + String(NAME) + "/" + topicName;
+  statusTopic = String(TOP_LEVEL) + "/" + String(STATUS) + "/" + String(NAME) + "/" + topicName;
 }
 
-void LED::state(int state) {
+void LED::set(int state) {
   if (state == ON) {
-    digitalWrite(13, HIGH);
+    digitalWrite(pin, LOW);
   } else if (state == OFF) {
-    digitalWrite(13, LOW);
+    digitalWrite(pin, HIGH);
   }
 }

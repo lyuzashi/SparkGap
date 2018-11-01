@@ -8,5 +8,8 @@ void setup() {
 }
 
 void loop() {
-  led.state(ON);
+  led.set(ON);
+  delay(200);
+  led.set(OFF);
+  delay(200);
 }
