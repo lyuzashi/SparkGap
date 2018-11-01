@@ -63,13 +63,21 @@ arduino --config-file ./.cli-config.yml compile --fqbn esp8266:esp8266:generic c
 ### Sonoff Basic
 * Subscribes to `relays/set/[hostname]/on`
 * Subscribes to `relays/set/[hostname]/led`
+* Subscribes to `relays/get/[hostname]/on`
+* Subscribes to `relays/get/[hostname]/led`
+* Subscribes to `relays/get/[hostname]/button`
 * Publishes to `relays/status/[hostname]/on`
+* Publishes to `relays/status/[hostname]/led`
 * Publishes to `relays/status/[hostname]/button`
 
 ### Sonoff 4 Channel
 * Subscribes to `relays/set/[hostname] +channel/on`
 * Subscribes to `relays/set/[hostname] +channel/led`
+* Subscribes to `relays/get/[hostname] +channel/on`
+* Subscribes to `relays/get/[hostname] +channel/led`
+* Subscribes to `relays/get/[hostname] +channel/button`
 * Publishes to `relays/status/[hostname] +channel/on`
+* Publishes to `relays/status/[hostname] +channel/led`
 * Publishes to `relays/status/[hostname] +channel/button`
 
 Where `+channel` is a relay number 1-4.
@@ -77,6 +85,9 @@ Where `+channel` is a relay number 1-4.
 ### Magic Home
 * Subscribes to `lights/set/[hostname] +channel/on`
 * Subscribes to `lights/set/[hostname] +channel/brightness`
+* Subscribes to `lights/get/[hostname] +channel/on`
+* Subscribes to `lights/get/[hostname] +channel/brightness`
+* Subscribes to `lights/get/[hostname]/sensor`
 * Publishes to `lights/status/[hostname] +channel/on`
 * Publishes to `lights/status/[hostname] +channel/brightness`
 * Publishes to `lights/status/[hostname]/sensor`
