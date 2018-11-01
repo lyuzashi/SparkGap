@@ -5,7 +5,7 @@ boolean LED1State = false;
 boolean LED2State = false;
 
 long buttonTimer = 0;
-long longPressTime = 250;
+long longPressTime = 1250;
 
 boolean buttonActive = false;
 boolean longPressActive = false;
@@ -19,7 +19,7 @@ void setup() {
 
 void loop() {
 
-	if (digitalRead(button) == HIGH) {
+	if (digitalRead(button) == LOW) {
 
 		if (buttonActive == false) {
 
