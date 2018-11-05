@@ -29,9 +29,14 @@ void setup() {
 
   Serial.printf("\nTry connecting to WiFi with SSID '%s'\n", WiFi.SSID().c_str());
 
+  Serial.printf("\nSetting mode. state='%d'", WiFi.status()); 
 
   WiFi.mode(WIFI_STA);
+  Serial.printf("\nBegin with stored creds. state='%d'", WiFi.status()); 
+
   WiFi.begin(WiFi.SSID().c_str(),WiFi.psk().c_str()); // reading data from EPROM, last saved credentials
+  Serial.printf("\nWaiting to connect. state='%d'", WiFi.status()); 
+
   while (WiFi.status() == WL_DISCONNECTED) {
     delay(500);
     Serial.print(".");
@@ -39,7 +44,7 @@ void setup() {
 
   wl_status_t status = WiFi.status();
   if(status == WL_CONNECTED) {
-    Serial.printf("\nConnected successfull to SSID '%s'\n", WiFi.SSID().c_str());
+    Serial.printf("\nConnected successfull to SSID '%s' %d\n", WiFi.SSID().c_str(), status);
   } else {
     Serial.printf("\nCould not connect to WiFi. state='%d'", status); 
     Serial.println("Please press WPS button on your router.\n Press any key to continue...");

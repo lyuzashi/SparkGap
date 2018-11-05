@@ -1,4 +1,4 @@
-# MQTT Smarthome Sonoff Basic Switch
+# MQTT Smarthome ESP8266 Devices
 
 ```bash
 $ git submodule init 
@@ -26,6 +26,13 @@ These shortcomings could potentially be fixed by projects such as
 
 Requires Arduino installed on system with ESP libraries downloaded in IDE.
 
+It may be necessary to enable WPS for the boards list using this command.
+
+```bash
+cd /Library/Arduino15/packages/esp8266/hardware/esp8266/2.4.2
+python ./tools/boards.txt.py --allowWPS --boardsgen
+```
+
 ### Arduino-CLI
 
 Official [Arduino CLI](https://github.com/arduino/arduino-cli), which is currently in alpha, so may have some issue.
@@ -35,14 +42,14 @@ Steps:
 1. Download Arduino CLI, name binary `arduino`
 2. Include ESP8266 board manager URLs in `.cli-config.yml`
 3. Update board index  
-  `arduino --config-file ./.cli-config.yml core update-index `
+  `arduino --config-file ./.cli-config.yml core update-index`
 4. Install ESP8266 core  
   `arduino --config-file ./.cli-config.yml core install esp8266:esp8266`
 
 `fqbn` can now be `esp8266:esp8266:generic` or `esp8266:esp8266:esp8285`
 
 ```
-arduino --config-file ./.cli-config.yml compile --fqbn esp8266:esp8266:generic code.ino
+arduino --config-file ./.cli-config.yml compile --fqbn esp8266:esp8266:generic SparkGap.ino
 ```
 ## Features
 
