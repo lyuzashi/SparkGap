@@ -7,8 +7,11 @@ DNSSD::DNSSD(char *service, char *protocol) {
 }
 
 void DNSSD::setup() {
+  Serial.println("starting discovery");
   updateState(DNSSD_STARTING);
+  Serial.println("now!");
   bool started = MDNS.begin(NAME);
+  Serial.println("discovery started");
   if (started) {
     updateState(DNSSD_IDLE);
   } else {
@@ -17,7 +20,9 @@ void DNSSD::setup() {
 }
 
 void DNSSD::find() {
-  state = DNSSD_SEARCHING;
+  Serial.println("search started");
+  updateState(DNSSD_SEARCHING);
+  Serial.println("now!");
   int answers = MDNS.queryService(_service, _protocol);
   if (answers == 0) {
     updateState(DNSSD_NOT_FOUND);
@@ -33,6 +38,7 @@ void DNSSD::setCallback(FunctionSlot<int> callback) {
 }
 
 void DNSSD::updateState(int newState) {
+  Serial.printf("DNS state update %d\n", newState);
   if (state != newState) {
     state = newState;
     stateChange.fire(state);

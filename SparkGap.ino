@@ -1,20 +1,40 @@
 #include "modules/led.h"
 #include "modules/wps.h";
 #include "modules/dnssd.h";
+#include "modules/mqtt.h";
 
 #define LED_TOPIC "led"
 
 WPS wps;
 DNSSD dnssd("mqtt", "tcp");
 LED led(13, LED_TOPIC);
-
+MQTT mqtt;
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
   if (state == WPS_CONNECTED) {
     led.set(OFF);
+    Serial.println("Connected to WIFI, about to start discovery");
     dnssd.setup();
   }
+}
+
+void printMessage(char* topic, uint8_t* payload, unsigned int length) {
+  Serial.print(topic);
+  Serial.print(" : ");
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+  }
+  Serial.print("\n");
+}
+
+void printMessage2(char* topic, uint8_t* payload, unsigned int length) {
+  Serial.print(topic);
+  Serial.print(" :2 ");
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)payload[i]);
+  }
+  Serial.print("\n");
 }
 
 void dnssdState(int state) {
@@ -31,8 +51,19 @@ void dnssdState(int state) {
   if (state == DNSSD_FOUND) {
     Serial.printf("MDNS found port %d\n", dnssd.port);
     Serial.print(dnssd.ip);
+    mqtt.setServer(dnssd.ip, dnssd.port);
+    if (mqtt.connect(NAME)) {
+      Serial.println("connected");
+      mqtt.publish("outTopic", "hello world");
+      mqtt.subscribe("inTopic");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(mqtt.state());
+    }
+    
   }
 }
+
 
 void setup() {
   
@@ -40,13 +71,14 @@ void setup() {
   Serial.printf("Chip ID %d", ESP.getChipId());
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
-
+  mqtt.onMessage(printMessage);
+  mqtt.onMessage(printMessage2);
 }
 
 void loop() {
   
   wps.loop();
-  
+  mqtt.loop();
 
   // led.set(ON);
   // delay(200);
