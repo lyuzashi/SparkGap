@@ -1,7 +1,10 @@
-#include "wps.h"
+#include <cstddef>
 #include <ESP8266WiFi.h>
+#include "../libraries/callback/Callback.h"
+#include "wps.h"
 
 WPS::WPS() {
+  WiFi.hostname(NAME);
   WiFi.mode(WIFI_STA);
 }
 
@@ -52,14 +55,14 @@ void WPS::reset() {
   // Might need ESP.reset() too?
 }
 
-void WPS::setCallback() {
-
+void WPS::setCallback(FunctionSlot<int> callback) {
+  stateChange.attach(callback);
 }
 
 void WPS::updateState(int newState) {
   if (state != newState) {
     state = newState;
-    // Then trigger callbacks
+    stateChange.fire(state);
   }
 }
 
