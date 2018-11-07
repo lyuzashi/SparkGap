@@ -33,14 +33,16 @@ void DNSSD::find() {
   }
 }
 
-void DNSSD::setCallback(FunctionSlot<int> callback) {
-  stateChange.attach(callback);
+void DNSSD::setCallback(void (*callback)(int)) {
+  stateChange.push_back(callback);
 }
 
 void DNSSD::updateState(int newState) {
   Serial.printf("DNS state update %d\n", newState);
   if (state != newState) {
     state = newState;
-    stateChange.fire(state);
+    for(unsigned int i = 0; i < stateChange.size(); ++i) {
+      stateChange[i](newState);
+    }
   }
 }

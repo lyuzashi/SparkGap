@@ -1,5 +1,4 @@
-#include <cstddef>
-#include "../libraries/callback/Callback.h"
+#include <vector>
 #define WPS_FAILED -2
 #define WIFI_DISCONNECTED -1
 #define WPS_CONNECTED 0
@@ -12,10 +11,10 @@ class WPS {
     void loop();
     void setup();
     void reset();
-    void setCallback(FunctionSlot<int> callback);
+    void setCallback(void (*callback)(int));
   private:
     int state;
-    Signal<int> stateChange;
+    std::vector<void (*)(int)> stateChange;
     void updateState(int newState);
     bool wpsConnected;
     void reconnect();

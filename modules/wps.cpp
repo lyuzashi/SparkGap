@@ -1,7 +1,5 @@
-#include <cstddef>
-#include <ESP8266WiFi.h>
-#include "../libraries/callback/Callback.h"
 #include "wps.h"
+#include <ESP8266WiFi.h>
 
 WPS::WPS() {
   WiFi.hostname(NAME);
@@ -55,14 +53,16 @@ void WPS::reset() {
   // Might need ESP.reset() too?
 }
 
-void WPS::setCallback(FunctionSlot<int> callback) {
-  stateChange.attach(callback);
+void WPS::setCallback(void (*callback)(int)) {
+  stateChange.push_back(callback);
 }
 
 void WPS::updateState(int newState) {
   if (state != newState) {
     state = newState;
-    stateChange.fire(state);
+    for(unsigned int i = 0; i < stateChange.size(); ++i) {
+      stateChange[i](newState);
+    }
   }
 }
 

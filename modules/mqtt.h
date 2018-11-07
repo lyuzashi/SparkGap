@@ -1,3 +1,4 @@
+#include <vector>
 #include <PubSubClient.h>
 
 class MQTT: public PubSubClient {
@@ -6,8 +7,7 @@ class MQTT: public PubSubClient {
     void onMessage(void (*callback)(char*, uint8_t*, unsigned int));
     // void onMessage(FunctionSlot<char*, uint8_t*, unsigned int> callback);
     // void onStateChange(FunctionSlot<int> callback);
-    void callbackMessage(char*, uint8_t*, unsigned int);
   private:
     std::vector<void (*)(char*, uint8_t*, unsigned int)> onMessageHandlers;
-    
+    void callbackMessage(char*, uint8_t*, unsigned int);
 };

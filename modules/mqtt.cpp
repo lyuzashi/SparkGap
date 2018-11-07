@@ -6,6 +6,8 @@ MQTT::MQTT(): PubSubClient() {
   WiFiClient espClient;
   setClient(espClient);
   setCallback([this] (char* topic, uint8_t* payload, unsigned int length) { this->callbackMessage(topic, payload, length); });
+
+  // Is it possible to overload the _state= method?
 }
 
 void MQTT::onMessage(void (*callback)(char*, uint8_t*, unsigned int)) {

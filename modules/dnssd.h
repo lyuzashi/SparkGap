@@ -1,7 +1,6 @@
+#include <vector>
 #include <Arduino.h>
 #include <ESP8266mDNS.h>
-#include <cstddef>
-#include "../libraries/callback/Callback.h"
 #define DNSSD_FAILED -2
 #define DNSSD_NOT_FOUND -1
 #define DNSSD_FOUND 0
@@ -16,10 +15,10 @@ class DNSSD {
     void find();
     IPAddress ip;
     uint16_t port;
-    void setCallback(FunctionSlot<int> callback);
+    void setCallback(void (*callback)(int));
   private:
     int state;
-    Signal<int> stateChange;
+    std::vector<void (*)(int)> stateChange;
     void updateState(int newState);
     char* _service;
     char* _protocol;
