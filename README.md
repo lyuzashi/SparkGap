@@ -29,7 +29,7 @@ Requires Arduino installed on system with ESP libraries downloaded in IDE.
 It may be necessary to enable WPS for the boards list using this command.
 
 ```bash
-cd /Library/Arduino15/packages/esp8266/hardware/esp8266/2.4.2
+cd ~/Library/Arduino15/packages/esp8266/hardware/esp8266/2.4.2
 python ./tools/boards.txt.py --allowWPS --boardsgen
 ```
 
