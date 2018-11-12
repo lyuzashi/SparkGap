@@ -1,19 +1,51 @@
-#include "modules/led.h"
-#include "modules/wps.h";
-#include "modules/dnssd.h";
-#include "modules/mqtt.h";
+#include <Arduino.h>
+#include <vector>
+#include "defines.h"
+#include "led.h"
+#include "wps.h"
+#include "dnssd.h"
+#include "mqtt.h"
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
 
-#define LED_TOPIC "led"
+WiFiClient client;
+PubSubClient mqtt(client);
+std::vector<void (*)(char*, uint8_t*, unsigned int)> onMessageHandlers;
+
+void onMessage(void (*callback)(char*, uint8_t*, unsigned int)) {
+  onMessageHandlers.push_back(callback);
+}
+
+void callbackMessage(char* topic, uint8_t* payload, unsigned int length) {
+  for(unsigned int i = 0; i < onMessageHandlers.size(); ++i) {
+    onMessageHandlers[i](topic, payload, length);
+  }
+}
+
 
 WPS wps;
 DNSSD dnssd("mqtt", "tcp");
-LED led(13, LED_TOPIC);
-MQTT mqtt;
+//LED led(13, LED_TOPIC);
+//MQTT mqtt(client);
+
+void report() {
+  Serial.println(ESP.getFreeHeap(),DEC);
+}
+
+void reportLoop(){
+  static const unsigned long REFRESH_INTERVAL = 5000; // ms
+  static unsigned long lastRefreshTime = 0;
+  if(millis() - lastRefreshTime >= REFRESH_INTERVAL) {
+    lastRefreshTime += REFRESH_INTERVAL;
+      report();
+  }
+}
+
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
   if (state == WPS_CONNECTED) {
-    led.set(OFF);
+//    led.set(OFF);
     Serial.println("Connected to WIFI, about to start discovery");
     dnssd.setup();
   }
@@ -71,14 +103,17 @@ void setup() {
   Serial.printf("Chip ID %d", ESP.getChipId());
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
-  mqtt.onMessage(printMessage);
-  mqtt.onMessage(printMessage2);
+  onMessage(printMessage);
+  onMessage(printMessage2);
+  mqtt.setCallback(callbackMessage);
 }
 
 void loop() {
   
   wps.loop();
   mqtt.loop();
+
+  reportLoop();
 
   // led.set(ON);
   // delay(200);
