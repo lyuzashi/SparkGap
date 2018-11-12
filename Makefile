@@ -1,5 +1,5 @@
 ROOT := $(realpath $(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
-SKETCH = $(ROOT)/SparkGap.ino
+SKETCH = $(ROOT)/src/SparkGap.ino
 
 EXCLUDE_DIRS=$(wildcard $(ARDUINO_LIBS)/*/tests)
 
