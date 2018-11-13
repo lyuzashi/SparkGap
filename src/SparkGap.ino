@@ -5,16 +5,11 @@
 #include "wps.h"
 #include "dnssd.h"
 #include "mqtt.h"
-#include <ESP8266WiFi.h>
-#include <PubSubClient.h>
-
-WiFiClient espClient;
-PubSubClient client(espClient);
 
 WPS wps;
 DNSSD dnssd("mqtt", "tcp");
 //LED led(13, LED_TOPIC);
-MQTT mqtt(&client);
+MQTT mqtt;
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
@@ -57,14 +52,14 @@ void dnssdState(int state) {
   if (state == DNSSD_FOUND) {
     Serial.printf("MDNS found port %d\n", dnssd.port);
     Serial.print(dnssd.ip);
-    client.setServer(dnssd.ip, dnssd.port);
-    if (client.connect(NAME)) {
+    mqtt.setServer(dnssd.ip, dnssd.port);
+    if (mqtt.connect(NAME)) {
       Serial.println("connected");
-      client.publish("outTopic", "hello world");
-      client.subscribe("inTopic");
+      // client.publish("outTopic", "hello world");
+      mqtt.subscribe("inTopic");
     } else {
       Serial.print("failed, rc=");
-      Serial.print(client.state());
+      // Serial.print(client.state());
     }
     
   }

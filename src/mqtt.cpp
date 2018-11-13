@@ -3,8 +3,11 @@
 #include <PubSubClient.h>
 #include <ESP8266WiFi.h>
 
-MQTT::MQTT(PubSubClient *_client) {
-  client = _client;
+WiFiClient espClient;
+PubSubClient _client(espClient);
+
+MQTT::MQTT() {
+  client = &_client;
   client->setCallback([this] (char* topic, uint8_t* payload, unsigned int length) { this->callbackMessage(topic, payload, length); });
   previousState = MQTT_DISCONNECTED;
 }
@@ -31,4 +34,16 @@ boolean MQTT::loop() {
 
 void MQTT::onStateChange(void (*callback)(int)) {
   stateChange.push_back(callback);
+}
+
+void MQTT::setServer(IPAddress ip, uint16_t port) {
+  client->setServer(ip, port);
+}
+
+boolean MQTT::subscribe(const char* topic) {
+  return client->subscribe(topic);
+}
+
+boolean MQTT::connect(const char* id) {
+  return client->connect(id);
 }
