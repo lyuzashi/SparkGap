@@ -14,7 +14,7 @@ PubSubClient client(espClient);
 WPS wps;
 DNSSD dnssd("mqtt", "tcp");
 //LED led(13, LED_TOPIC);
-MQTT mqtt(client);
+MQTT mqtt(&client);
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
