@@ -28,19 +28,6 @@ DNSSD dnssd("mqtt", "tcp");
 //LED led(13, LED_TOPIC);
 //MQTT mqtt(client);
 
-void report() {
-  Serial.println(ESP.getFreeHeap(),DEC);
-}
-
-void reportLoop(){
-  static const unsigned long REFRESH_INTERVAL = 5000; // ms
-  static unsigned long lastRefreshTime = 0;
-  if(millis() - lastRefreshTime >= REFRESH_INTERVAL) {
-    lastRefreshTime += REFRESH_INTERVAL;
-      report();
-  }
-}
-
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
@@ -112,8 +99,6 @@ void loop() {
   
   wps.loop();
   mqtt.loop();
-
-  reportLoop();
 
   // led.set(ON);
   // delay(200);
