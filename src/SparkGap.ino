@@ -8,26 +8,13 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-WiFiClient client;
-PubSubClient mqtt(client);
-std::vector<void (*)(char*, uint8_t*, unsigned int)> onMessageHandlers;
-
-void onMessage(void (*callback)(char*, uint8_t*, unsigned int)) {
-  onMessageHandlers.push_back(callback);
-}
-
-void callbackMessage(char* topic, uint8_t* payload, unsigned int length) {
-  for(unsigned int i = 0; i < onMessageHandlers.size(); ++i) {
-    onMessageHandlers[i](topic, payload, length);
-  }
-}
-
+WiFiClient espClient;
+PubSubClient client(espClient);
 
 WPS wps;
 DNSSD dnssd("mqtt", "tcp");
 //LED led(13, LED_TOPIC);
-//MQTT mqtt(client);
-
+MQTT mqtt(client);
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
@@ -70,14 +57,14 @@ void dnssdState(int state) {
   if (state == DNSSD_FOUND) {
     Serial.printf("MDNS found port %d\n", dnssd.port);
     Serial.print(dnssd.ip);
-    mqtt.setServer(dnssd.ip, dnssd.port);
-    if (mqtt.connect(NAME)) {
+    client.setServer(dnssd.ip, dnssd.port);
+    if (client.connect(NAME)) {
       Serial.println("connected");
-      mqtt.publish("outTopic", "hello world");
-      mqtt.subscribe("inTopic");
+      client.publish("outTopic", "hello world");
+      client.subscribe("inTopic");
     } else {
       Serial.print("failed, rc=");
-      Serial.print(mqtt.state());
+      Serial.print(client.state());
     }
     
   }
@@ -90,9 +77,8 @@ void setup() {
   Serial.printf("Chip ID %d", ESP.getChipId());
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
-  onMessage(printMessage);
-  onMessage(printMessage2);
-  mqtt.setCallback(callbackMessage);
+  mqtt.onMessage(printMessage);
+  mqtt.onMessage(printMessage2);
 }
 
 void loop() {

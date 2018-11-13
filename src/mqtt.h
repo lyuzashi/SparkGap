@@ -2,9 +2,9 @@
 #include <vector>
 #include <PubSubClient.h>
 
-class MQTT: public PubSubClient {
+class MQTT {
   public:
-    MQTT();
+    MQTT(PubSubClient);
     void onMessage(void (*callback)(char*, uint8_t*, unsigned int));
     void onStateChange(void (*callback)(int));
     boolean loop();
@@ -13,4 +13,5 @@ class MQTT: public PubSubClient {
     std::vector<void (*)(int)> stateChange;
     void callbackMessage(char*, uint8_t*, unsigned int);
     int previousState;
+    PubSubClient client;
 };
