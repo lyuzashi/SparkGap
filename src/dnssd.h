@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <vector>
+#include <Arduino.h>
 #include <ESP8266mDNS.h>
 #define DNSSD_FAILED -2
 #define DNSSD_NOT_FOUND -1
@@ -13,6 +14,7 @@ class DNSSD {
     DNSSD(char *service, char *protocol);
     void setup();
     void find();
+    void forget();
     IPAddress ip;
     uint16_t port;
     void setCallback(void (*callback)(int));

@@ -34,6 +34,12 @@ void DNSSD::find() {
   }
 }
 
+void DNSSD::forget() {
+  ip = INADDR_NONE;
+  port = 0;
+  updateState(DNSSD_IDLE);
+}
+
 void DNSSD::setCallback(void (*callback)(int)) {
   stateChange.push_back(callback);
 }

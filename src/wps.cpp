@@ -39,14 +39,14 @@ void WPS::loop() {
 
 void WPS::setup() {
   updateState(WPS_CONNECTING);
-//  bool wpsSuccess = WiFi.beginWPSConfig();
-//  if(wpsSuccess) {
-//    if(WiFi.SSID().length() > 0) {
-//      updateState(WPS_CONNECTED);
-//    } else {
-//      updateState(WPS_FAILED);
-//    }
-//  }
+  bool wpsSuccess = WiFi.beginWPSConfig();
+  if(wpsSuccess) {
+    if(WiFi.SSID().length() > 0) {
+      updateState(WPS_CONNECTED);
+    } else {
+      updateState(WPS_FAILED);
+    }
+  }
 }
 
 void WPS::reset() {
