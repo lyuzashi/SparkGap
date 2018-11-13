@@ -3,6 +3,9 @@
 ```bash
 $ git submodule init 
 $ git submodule update
+$ cd utils/esp8266/tools
+$ ./get.py
+$ cd ../../../
 $ make flash
 ```
 

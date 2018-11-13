@@ -1,6 +1,9 @@
 ROOT := $(realpath $(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
 SKETCH = $(ROOT)/src/SparkGap.ino
 
+ESP_ROOT=$(ROOT)/utils/esp8266
+CUSTOM_LIBS=$(ROOT)/libs
+
 EXCLUDE_DIRS=$(wildcard $(ARDUINO_LIBS)/*/tests)
 
 UPLOAD_PORT ?= $(shell ls -1tr /dev/tty.usb* 2>/dev/null | tail -1)
