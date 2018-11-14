@@ -12,12 +12,13 @@ MQTT::MQTT() {
   previousState = MQTT_DISCONNECTED;
 }
 
-void MQTT::onMessage(void (*callback)(char*, uint8_t*, unsigned int)) {
+void MQTT::onMessage(std::function<void(char*, uint8_t*, unsigned int)> callback) {
   onMessageHandlers.push_back(callback);
 }
 
 void MQTT::callbackMessage(char* topic, uint8_t* payload, unsigned int length) {
   for(unsigned int i = 0; i < onMessageHandlers.size(); ++i) {
+    Serial.printf("sending message to cb %d", i);
     onMessageHandlers[i](topic, payload, length);
   }
 }

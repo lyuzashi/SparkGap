@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "mqtt.h"
 #define OFF 0
 #define ON 1
 #define WINK 2
@@ -7,7 +8,7 @@
 
 class LED {
   public:
-    LED(int pinNumber, const char* topicName);
+    LED(int pinNumber, const char* topicName, MQTT *mqtt);
     void set(int state);
     uint8_t status();
   private:
@@ -16,4 +17,5 @@ class LED {
     String setTopic;
     String getTopic;
     String statusTopic;
+    void handleMessage(char* topic, uint8_t* payload, unsigned int length);
 };

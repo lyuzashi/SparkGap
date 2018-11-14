@@ -8,13 +8,13 @@
 
 WPS wps;
 DNSSD dnssd("mqtt", "tcp");
-//LED led(13, LED_TOPIC);
 MQTT mqtt;
+LED led(13, LED_TOPIC, &mqtt);
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
   if (state == WPS_CONNECTED) {
-//    led.set(OFF);
+    led.set(OFF);
     Serial.println("Connected to WIFI, about to start discovery");
     dnssd.setup();
   }
