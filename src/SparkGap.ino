@@ -53,7 +53,7 @@ void dnssdState(int state) {
     Serial.printf("MDNS found port %d\n", dnssd.port);
     Serial.print(dnssd.ip);
     mqtt.setServer(dnssd.ip, dnssd.port);
-    if (mqtt.connect(NAME)) {
+    if (mqtt.connect(NAME, NAME, String(ESP.getChipId()).c_str())) {
       Serial.println("connected");
       // client.publish("outTopic", "hello world");
       mqtt.subscribe("inTopic");

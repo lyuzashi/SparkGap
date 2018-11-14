@@ -48,3 +48,7 @@ boolean MQTT::subscribe(const char* topic) {
 boolean MQTT::connect(const char* id) {
   return client->connect(id);
 }
+
+boolean MQTT::connect(const char* id, const char* user, const char* pass) {
+  return client->connect(id, user, pass);
+}
