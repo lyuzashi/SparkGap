@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <string>
+#define TOP_LEVEL "relays"
+#define SET "set"
+#define NAME "garden"
+
+#define SET_TOPIC TOP_LEVEL "/" SET "/" NAME "/"
+
+#define TOPIC "led"
+
+#define T2 "button"
+
+// String(TOP_LEVEL) + "/" + String(SET) + "/" + String(NAME) + "/" + topicName;
+
+char* compose(const char* topic, char *output) {
+//  char* topic = "more";
+//  char* setTopicPrefix;
+
+ 
+  char buffer[sizeof(SET_TOPIC) + sizeof(topic)];
+//  setTopicPrefix = TOP_LEVEL "/" SET "/" NAME "/";
+
+//  strncpy(setMoreTopic, setTopicPrefix, sizeof(setTopicPrefix));
+//  strncat(setMoreTopic, topic, sizeof(topic));
+
+  strcpy(buffer, SET_TOPIC);
+  strcat(buffer, topic);
+
+  return strcpy(output, buffer);
+}
+
+void loop() {
+}
+
+int main(int argc, const char *argv[]) {
+
+  char output[] = {};
+  compose(TOPIC, output);
+
+  printf(output);
+
+  char output2[] = {};
+  compose(T2, output2);
+
+  printf(output2);
+
+  return 0;
+}
+

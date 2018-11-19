@@ -9,7 +9,7 @@ class MQTT {
   public:
     MQTT();
     void onMessage(std::function<void(char*, uint8_t*, unsigned int)> callback);
-    void onStateChange(void (*callback)(int));
+    void onStateChange(std::function<void(int)> callback);
     void setServer(IPAddress ip, uint16_t port);
     boolean loop();
     boolean subscribe(const char* topic);
@@ -17,7 +17,7 @@ class MQTT {
     boolean connect(const char* id, const char* user, const char* pass);
   private:
     std::vector<std::function<void(char*, uint8_t*, unsigned int)>> onMessageHandlers;
-    std::vector<void (*)(int)> stateChange;
+    std::vector<std::function<void(int)>> stateChange;
     void callbackMessage(char*, uint8_t*, unsigned int);
     int previousState;
     PubSubClient* client;

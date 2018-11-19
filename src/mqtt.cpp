@@ -27,13 +27,14 @@ boolean MQTT::loop() {
   if (previousState != client->state()) {
     previousState = client->state();
     for(unsigned int i = 0; i < stateChange.size(); ++i) {
+      Serial.printf("sending state %d to cb %d\n", previousState, i);
       stateChange[i](previousState);
     }
   }
   return client->loop();
 }
 
-void MQTT::onStateChange(void (*callback)(int)) {
+void MQTT::onStateChange(std::function<void(int)> callback) {
   stateChange.push_back(callback);
 }
 
