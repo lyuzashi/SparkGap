@@ -1,3 +1,6 @@
+#ifndef dnssd_h
+#define dnssd_h
+
 #include <Arduino.h>
 #include <vector>
 #include <Arduino.h>
@@ -25,3 +28,5 @@ class DNSSD {
     char* _service;
     char* _protocol;
 };
+
+#endif

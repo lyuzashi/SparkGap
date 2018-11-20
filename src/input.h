@@ -1,3 +1,6 @@
+#ifndef input_h
+#define input_h
+
 #include "channel.h"
 #include "mqtt.h"
 
@@ -14,3 +17,5 @@ class Input : public Channel {
     char getTopic[50];
     char statusTopic[50];
 };
+
+#endif

@@ -13,14 +13,14 @@ Channel::Channel(int pin, char* topic, MQTT *mqtt) : pin(pin), topic(topic), mqt
   // individual callbacks
   // https://stackoverflow.com/a/23231363/2530832
 
-  mqtt->onMessage([this] (char* topic, uint8_t* payload, unsigned int length) {
-    this->handleMessage(topic, payload, length);
-    // Both input and output classes should add their own onMessage calls, either to get or set,
-    // with string comparison to provide just the appropriate topic
-    // topic could be on or brightness for one thing e.g. a PWM
-    // topic == statusTopic -> call get(topic)
-    // get method in input needs to publish to status; and any time the state changes
-  });
+  // mqtt->onMessage([this] (char* topic, uint8_t* payload, unsigned int length) {
+  //   this->handleMessage(topic, payload, length);
+  //   // Both input and output classes should add their own onMessage calls, either to get or set,
+  //   // with string comparison to provide just the appropriate topic
+  //   // topic could be on or brightness for one thing e.g. a PWM
+  //   // topic == statusTopic -> call get(topic)
+  //   // get method in input needs to publish to status; and any time the state changes
+  // });
 
   mqtt->onStateChange([this] (int mqttState) {
     if(mqttState == MQTT_CONNECTED) {

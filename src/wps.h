@@ -1,3 +1,6 @@
+#ifndef wps_h
+#define wps_h
+
 #include <Arduino.h>
 #include <vector>
 #define WPS_FAILED -2
@@ -20,3 +23,5 @@ class WPS {
     bool wpsConnected;
     void reconnect();
 };
+
+#endif
