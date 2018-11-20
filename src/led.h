@@ -7,11 +7,19 @@
 #define BLINK 3
 #define BLINK_FAST 4
 
+#define LED_TOPIC "led"
+#define LED_PIN 13
+
 class LED: private Output {
   public:
-    LED(int pin, char* topic, MQTT *mqtt);
-    LED(int pin, MQTT *mqtt);
+    LED(int pin, char* suffix, MQTT *mqtt) : Output(pin, LED_TOPIC, suffix, mqtt) {};
+    LED(char* suffix, MQTT *mqtt) : Output(LED_PIN, LED_TOPIC, suffix, mqtt) {};
+    LED(int pin, MQTT *mqtt) : Output(pin, LED_TOPIC, mqtt) {};
+    LED(MQTT *mqtt) : Output(LED_PIN, LED_TOPIC, mqtt) {};
+    void setup();
     void set(int state);
+    void set(uint8_t* payload, char* topic);
+    void get(char* topic);
     uint8_t status();
   private:
     // uint8_t pin;
@@ -19,7 +27,7 @@ class LED: private Output {
     // char* topic;
     // char setTopic[50];
     // String getTopic;
-    String statusTopic;
+    // String statusTopic;
     void handleMessage(char* topic, uint8_t* payload, unsigned int length);
-    virtual void subscribe();
+    // virtual void subscribe();
 };

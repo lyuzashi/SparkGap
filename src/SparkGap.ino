@@ -9,7 +9,7 @@
 WPS wps;
 DNSSD dnssd("mqtt", "tcp");
 MQTT mqtt;
-LED led(13, LED_TOPIC, &mqtt);
+LED led(&mqtt);
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);

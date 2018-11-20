@@ -5,24 +5,24 @@
 #include "types.h"
 #include "mqtt-smarthome.h"
 
-#define SET_TOPIC TOP_LEVEL "/" SET "/" NAME "/"
+// #define SET_TOPIC TOP_LEVEL "/" SET "/" NAME "/"
 
-void composeSetTopic(const char* topic, char* composite) {
-  char buffer[sizeof(SET_TOPIC) + sizeof(topic)];
-  strcpy(buffer, SET_TOPIC);
-  strcat(buffer, topic);
-  strcpy(composite, buffer);
+// void composeSetTopic(const char* topic, char* composite) {
+//   char buffer[sizeof(SET_TOPIC) + sizeof(topic)];
+//   strcpy(buffer, SET_TOPIC);
+//   strcat(buffer, topic);
+//   strcpy(composite, buffer);
   
-}
+// }
 
 // LED::LED(int pin, MQTT *mqtt) : Output(pin, "led", mqtt) {
 
 // }
 
-LED::LED(int pin, char* topic, MQTT *mqtt) : Output(pin, topic, mqtt) {
-  pinMode(pin, OUTPUT);
-  composeSetTopic(topic, setTopic);
-  createGetTopic(getTopic, "on");
+// LED::LED(int pin, char* suffix, MQTT *mqtt) : Output(pin, "led", suffix, mqtt) {
+  
+  // composeSetTopic(topic, setTopic);
+  // createGetTopic(getTopic, "on");
 
   // setTopic = String(TOP_LEVEL) + "/" + String(SET) + "/" + String(NAME) + "/" + topicName;
   // getTopic = String(TOP_LEVEL) + "/" + String(GET) + "/" + String(NAME) + "/" + topicName;
@@ -37,8 +37,13 @@ LED::LED(int pin, char* topic, MQTT *mqtt) : Output(pin, topic, mqtt) {
   // });
 
   
+// }
+
+void LED::setup() {
+  pinMode(pin, OUTPUT);
 }
 
+// Replaced with payload reading method
 void LED::set(int state) {
   if (state == ON) {
     digitalWrite(pin, LOW);
@@ -48,16 +53,25 @@ void LED::set(int state) {
 }
 
 void LED::handleMessage(char* topic, uint8_t* payload, unsigned int length) {
-  if (strncmp ((const char*)topic, setTopic, length) == 0) {
-   if (strncmp ((const char*)payload, "1", length) == 0) {
-    set(ON);
-   }
-   if (strncmp ((const char*)payload, "0", length) == 0) {
-    set(OFF);
-   }
-  }
+  // This works, but moving setTopic to output
+  // if (strncmp ((const char*)topic, setTopic, length) == 0) {
+  //  if (strncmp ((const char*)payload, "1", length) == 0) {
+  //   set(ON);
+  //  }
+  //  if (strncmp ((const char*)payload, "0", length) == 0) {
+  //   set(OFF);
+  //  }
+  // }
 }
 
-void LED::subscribe() {
-  mqtt->subscribe(setTopic);
+// Moved to channel
+// void LED::subscribe() {
+//   mqtt->subscribe(setTopic);
+// }
+
+void LED::set(uint8_t* payload, char* topic) {
+  // For PWM, can check topic for on/brightness
+  set(atoi((const char*)payload));
 }
+
+void LED::get(char* topic) { }

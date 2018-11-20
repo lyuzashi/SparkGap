@@ -15,13 +15,26 @@ Channel::Channel(int pin, char* topic, MQTT *mqtt) : pin(pin), topic(topic), mqt
 
   mqtt->onMessage([this] (char* topic, uint8_t* payload, unsigned int length) {
     this->handleMessage(topic, payload, length);
+    // Both input and output classes should add their own onMessage calls, either to get or set,
+    // with string comparison to provide just the appropriate topic
+    // topic could be on or brightness for one thing e.g. a PWM
+    // topic == statusTopic -> call get(topic)
+    // get method in input needs to publish to status; and any time the state changes
   });
 
   mqtt->onStateChange([this] (int mqttState) {
     if(mqttState == MQTT_CONNECTED) {
+      // Input and output constructors could add to a list that gets subscribed to by this call
+      // subscriptions:
+      // * set (setTopic)
+      // * get (getTopic, statusTopic)
       this->subscribe();
     } 
   });
+
+  // This doesn't work because parent class is constructed first
+  // try solution here: https://stackoverflow.com/a/962325
+  // this->setup();
 
 }
 
@@ -49,4 +62,10 @@ void Channel::createTopic(char* output, char* method, char* suffix) {
   strcat(buffer, SP);
   strcat(buffer, topic);
   strcat(output, buffer);
+}
+
+void Channel::subscribe() {
+  for(unsigned int i = 0; i < subscriptionTopics.size(); ++i) {
+    mqtt->subscribe(subscriptionTopics[i]);
+  }
 }
