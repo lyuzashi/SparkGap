@@ -28,6 +28,7 @@ void Input::init() {
 void Input::stateChange() {
   // How to execute this method in multi-inheritance?
   // TODO only publish when clinet connected 
-  MQTT::client.publish(statusTopic, get(topic));
+  char buffer[16];
+  MQTT::client.publish(statusTopic, get(buffer));
 };
 

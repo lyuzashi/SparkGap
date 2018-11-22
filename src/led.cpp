@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "stdlib_noniso.h"
 #include "defines.h"
 #include "led.h"
 #include "mqtt.h"
@@ -16,9 +17,9 @@ void LED::set(int newState) {
     digitalWrite(pin, HIGH);
   }
   if(newState != state) {
-    Output::stateChange();
+    state = newState;
+    Input::stateChange();
   }
-  state = newState;
 }
 
 void LED::set(uint8_t* payload, char* topic) {
@@ -26,8 +27,6 @@ void LED::set(uint8_t* payload, char* topic) {
   set(atoi((const char*)payload));
 }
 
-char* LED::get(char* topic) {
-  // For PWM, can check topic for on/brightness
-  char buffer[16];
-  return itoa(state, buffer, 10);
+char* LED::get(char* output) {
+  return itoa(state, output, 10);
 }

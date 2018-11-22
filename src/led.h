@@ -22,7 +22,7 @@ class LED: private Output {
     void setup();
     void set(int state);
     void set(uint8_t* payload, char* topic);
-    char* get(char* topic);
+    char* get(char* output);
   private:
     int state;
 };
