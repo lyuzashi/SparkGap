@@ -10,12 +10,15 @@ void LED::setup() {
 }
 
 void LED::set(int newState) {
-  state = newState;
-  if (state == ON) {
+  if (newState == ON) {
     digitalWrite(pin, LOW);
-  } else if (state == OFF) {
+  } else if (newState == OFF) {
     digitalWrite(pin, HIGH);
   }
+  if(newState != state) {
+    Output::stateChange();
+  }
+  state = newState;
 }
 
 void LED::set(uint8_t* payload, char* topic) {

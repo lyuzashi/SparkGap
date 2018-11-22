@@ -9,7 +9,7 @@ class Input : public Channel {
     Input(int pin, char* topic, char* suffix, MQTT *mqtt);
     Input(int pin, char* topic, MQTT *mqtt);
     virtual char* get(char* topic) = 0;
-    void stateChange(char* state, char* topic);
+    void stateChange();
   private:
     char getTopic[50];
     char statusTopic[50];

@@ -20,12 +20,14 @@ void Input::init() {
   // Register a new callback for MQTT messages, specific to this topic
   mqtt->onMessage([this] (char* topic, uint8_t* payload, unsigned int length) {
     if (strcmp (topic, this->getTopic) == 0) {
-      MQTT::client.publish(statusTopic, get(topic));
+      stateChange();
     };
   });
 };
 
-void Input::stateChange(char* state, char* topic) {
- // How to execute this method in multi-inheritance?
+void Input::stateChange() {
+  // How to execute this method in multi-inheritance?
+  // TODO only publish when clinet connected 
+  MQTT::client.publish(statusTopic, get(topic));
 };
 
