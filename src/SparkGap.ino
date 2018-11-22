@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <vector>
 #include "defines.h"
+#include "setup.h"
 #include "led.h"
 #include "wps.h"
 #include "dnssd.h"
@@ -20,24 +21,6 @@ void wpsState(int state) {
   }
 }
 
-void printMessage(char* topic, uint8_t* payload, unsigned int length) {
-  Serial.print(topic);
-  Serial.print(" : ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.print("\n");
-}
-
-void printMessage2(char* topic, uint8_t* payload, unsigned int length) {
-  Serial.print(topic);
-  Serial.print(" :2 ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.print("\n");
-}
-
 void dnssdState(int state) {
   Serial.printf("MDNS state %d\n", state);
   if (state == DNSSD_IDLE) {
@@ -52,11 +35,11 @@ void dnssdState(int state) {
   if (state == DNSSD_FOUND) {
     Serial.printf("MDNS found port %d\n", dnssd.port);
     Serial.print(dnssd.ip);
-    mqtt.setServer(dnssd.ip, dnssd.port);
-    if (mqtt.connect(NAME, NAME, String(ESP.getChipId()).c_str())) {
+    MQTT::client.setServer(dnssd.ip, dnssd.port);
+    if (MQTT::client.connect(NAME, NAME, String(ESP.getChipId()).c_str())) {
       Serial.println("connected");
       // client.publish("outTopic", "hello world");
-      mqtt.subscribe("inTopic");
+      MQTT::client.subscribe("inTopic");
     } else {
       Serial.print("failed, rc=");
       // Serial.print(client.state());
@@ -67,13 +50,11 @@ void dnssdState(int state) {
 
 
 void setup() {
-  
+  Setup::run();
   Serial.begin(115200);
   Serial.printf("Chip ID %d", ESP.getChipId());
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
-  mqtt.onMessage(printMessage);
-  mqtt.onMessage(printMessage2);
 }
 
 void loop() {

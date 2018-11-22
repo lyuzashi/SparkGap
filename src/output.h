@@ -11,7 +11,7 @@ class Output : public Input {
     virtual void set(uint8_t* payload, char* topic) = 0;
   private:
     char setTopic[50];
-    void setup();
+    void init();
 };
 
 #endif

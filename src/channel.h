@@ -2,9 +2,10 @@
 #define channel_h
 
 #include <vector>
+#include "setup.h"
 #include "mqtt.h"
-//toplevelname, method, item, interfaces
-class Channel {
+
+class Channel : public Setup {
   public:
     Channel(int pin, char* topic, MQTT *mqtt);
     Channel(int pin, char* topic, char* suffix, MQTT *mqtt);
@@ -17,6 +18,8 @@ class Channel {
     virtual void setup() = 0;
     std::vector<char*> subscriptionTopics;
     void subscribe();
+  private:
+    void init();
 };
 
 #endif

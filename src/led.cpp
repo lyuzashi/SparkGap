@@ -5,17 +5,12 @@
 #include "types.h"
 #include "mqtt-smarthome.h"
 
-
-LED::LED(MQTT *mqtt) : Output(LED_PIN, LED_TOPIC, mqtt) {
-  setup();
-};
-
-
 void LED::setup() {
   pinMode(pin, OUTPUT);
 }
 
-void LED::set(int state) {
+void LED::set(int newState) {
+  state = newState;
   if (state == ON) {
     digitalWrite(pin, LOW);
   } else if (state == OFF) {
@@ -28,4 +23,8 @@ void LED::set(uint8_t* payload, char* topic) {
   set(atoi((const char*)payload));
 }
 
-void LED::get(char* topic) { }
+char* LED::get(char* topic) {
+  // For PWM, can check topic for on/brightness
+  char buffer[16];
+  return itoa(state, buffer, 10);
+}

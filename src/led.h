@@ -18,21 +18,13 @@ class LED: private Output {
     LED(int pin, char* suffix, MQTT *mqtt) : Output(pin, LED_TOPIC, suffix, mqtt) {};
     LED(char* suffix, MQTT *mqtt) : Output(LED_PIN, LED_TOPIC, suffix, mqtt) {};
     LED(int pin, MQTT *mqtt) : Output(pin, LED_TOPIC, mqtt) {};
-    LED(MQTT *mqtt); // : Output(LED_PIN, LED_TOPIC, mqtt) {};
+    LED(MQTT *mqtt) : Output(LED_PIN, LED_TOPIC, mqtt) {};
     void setup();
     void set(int state);
     void set(uint8_t* payload, char* topic);
-    void get(char* topic);
-    uint8_t status();
+    char* get(char* topic);
   private:
-    // uint8_t pin;
-    // MQTT& _mqtt;
-    // char* topic;
-    // char setTopic[50];
-    // String getTopic;
-    // String statusTopic;
-    void handleMessage(char* topic, uint8_t* payload, unsigned int length);
-    // virtual void subscribe();
+    int state;
 };
 
 #endif

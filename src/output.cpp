@@ -4,21 +4,21 @@
 #include "mqtt-smarthome.h"
 
 Output::Output(int pin, char* topic, char* suffix, MQTT *mqtt) : Input(pin, topic, suffix, mqtt) {
-  Output::setup();
+  init();
 };
 
 Output::Output(int pin, char* topic, MQTT *mqtt) : Input(pin, topic, mqtt) {
-  Output::setup();
+  init();
 };
 
-void Output::setup() {
+void Output::init() {
 
   createTopic(setTopic, SET);
 
   subscriptionTopics.push_back(setTopic);
 
   mqtt->onMessage([this] (char* topic, uint8_t* payload, unsigned int length) {
-    if (strncmp ((const char*)topic, setTopic, sizeof(topic)) == 0) {
+    if (strcmp (topic, this->setTopic) == 0) {
       set(payload, topic);
     };
   });
