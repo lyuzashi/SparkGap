@@ -2,6 +2,7 @@
 #define led_h
 
 #include <Arduino.h>
+#include <Ticker.h>
 #include "output.h"
 #include "mqtt.h"
 #define OFF 0
@@ -25,6 +26,9 @@ class LED: private Output {
     char* get(char* output);
   private:
     int state;
+    Ticker interval;
+    void blink();
+    void wink(int previousState);
 };
 
 #endif

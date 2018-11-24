@@ -8,7 +8,12 @@ EXCLUDE_DIRS=$(wildcard $(ARDUINO_LIBS)/*/tests) $(wildcard $(CUSTOM_LIBS)/*/tes
 
 UPLOAD_PORT ?= $(shell ls -1tr /dev/tty.usb* 2>/dev/null | tail -1)
 
-FLASH_DEF=1M0
+# For versions <= 2.4.0
+# FLASH_DEF=1M0
+# For versions 2.4.3+
+FLASH_DEF=1M
+UPLOAD_SPEED="115200"
+
 FLASH_MODE=dout
 LWIP_VARIANT=Prebuilt (v1.4 Higher Bandwidth)
 

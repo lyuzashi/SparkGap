@@ -48,6 +48,11 @@ void dnssdState(int state) {
   }
 }
 
+void mqttState(int state) {
+  if (state == MQTT_CONNECTION_LOST || state == MQTT_CONNECT_FAILED || state == MQTT_DISCONNECTED) {
+    dnssd.forget();
+  }
+}
 
 void setup() {
   Setup::run();
@@ -55,11 +60,15 @@ void setup() {
   Serial.printf("Chip ID %d", ESP.getChipId());
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
+  mqtt.onStateChange(mqttState);
 }
 
 void loop() {
   
   wps.loop();
+
+  // Apparently this needs to be throttled to prevent frequent reconnects
+  delay(100);
   mqtt.loop();
 
   // led.set(ON);

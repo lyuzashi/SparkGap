@@ -14,13 +14,21 @@
 
 #include <Ticker.h>
 #include <Arduino.h>
+#include <functional>
 #define LED_BUILTIN 13
 
 Ticker flipper;
 
+class Thing {
+  public:
+    void flip();
+};
+
+Thing thing;
+
 int count = 0;
 
-void flip() {
+void Thing::flip() {
   int state = digitalRead(LED_BUILTIN);  // get the current state of GPIO1 pin
   digitalWrite(LED_BUILTIN, !state);     // set pin to the opposite state
 
@@ -35,12 +43,16 @@ void flip() {
   }
 }
 
+void thingflip(Thing *t) {
+  t->flip();
+};
+
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
 
   // flip the pin every 0.3s
-  flipper.attach(0.3, flip);
+  flipper.attach(0.3, std::bind(thingflip, thing));
 }
 
 void loop() {
