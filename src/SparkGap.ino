@@ -68,7 +68,7 @@ void loop() {
   wps.loop();
 
   // Apparently this needs to be throttled to prevent frequent reconnects
-  delay(100);
+  // delay(100);
   mqtt.loop();
 
   // led.set(ON);
