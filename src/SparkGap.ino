@@ -1,8 +1,11 @@
 #include <Arduino.h>
 #include <vector>
 #include "defines.h"
+#include "types.h"
 #include "setup.h"
 #include "led.h"
+#include "relay.h"
+#include "button.h"
 #include "wps.h"
 #include "dnssd.h"
 #include "mqtt.h"
@@ -10,7 +13,13 @@
 WPS wps;
 DNSSD dnssd("mqtt", "tcp");
 MQTT MQTT::instance;
-LED led;
+
+#ifdef TYPE_BASIC
+  LED led;
+  Relay relay;
+  Button button;
+#endif
+
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
