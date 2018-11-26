@@ -29,7 +29,7 @@ void Channel::subscribe() {
 }
 
 void Channel::createTopic(char* output, char* method) {
-  boolean hasSuffix = sizeof(suffix) > 0;
+  boolean hasSuffix = strcmp(suffix, "") != 0;
   int bufferSize = sizeof(TOP_LEVEL) + 1 + sizeof(method) + 1 + sizeof(NAME) + 1 + sizeof(topic);
   if (hasSuffix) {
     bufferSize += 1 + sizeof(suffix);

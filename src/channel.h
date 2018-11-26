@@ -9,9 +9,10 @@ class Channel : public Setup {
     Channel(int pin, char* topic, char* suffix);
     Channel(int pin, char* topic);
     char* topic;
-    char* suffix;
+    char* suffix = "";
     uint8_t pin;
     void createTopic(char* output, char* method);
+    void createTopic(char* output, char* method, char* suffix);
     virtual void setup() = 0;
     std::vector<char*> subscriptionTopics;
     void subscribe();
