@@ -5,15 +5,13 @@
 #include "types.h"
 #include "mqtt-smarthome.h"
 
-Channel::Channel(int pin, char* topic, MQTT *mqtt) : Setup(), pin(pin), topic(topic), mqtt(mqtt) {
-  init();
-}
-
-
 Channel::Channel(int pin, char* topic) : Setup(), pin(pin), topic(topic) {
   init();
 }
 
+Channel::Channel(int pin, char* topic, char* suffix) : Setup(), pin(pin), topic(topic), suffix(suffix) {
+  init();
+}
 
 void Channel::init() {
   MQTT::instance.onStateChange([this] (int mqttState) {
@@ -31,28 +29,22 @@ void Channel::subscribe() {
 }
 
 void Channel::createTopic(char* output, char* method) {
-  char buffer[sizeof(TOP_LEVEL) + 1 + sizeof(method) + 1 + sizeof(NAME) + 1 + sizeof(topic)];
+  boolean hasSuffix = sizeof(suffix) > 0;
+  int bufferSize = sizeof(TOP_LEVEL) + 1 + sizeof(method) + 1 + sizeof(NAME) + 1 + sizeof(topic);
+  if (hasSuffix) {
+    bufferSize += 1 + sizeof(suffix);
+  }
+  char buffer[bufferSize];
   strcpy(buffer, TOP_LEVEL);
   strcat(buffer, SP);
   strcat(buffer, method);
   strcat(buffer, SP);
   strcat(buffer, NAME);
+  if (hasSuffix) {
+    strcat(buffer, " ");
+    strcat(buffer, suffix);
+  }
   strcat(buffer, SP);
   strcat(buffer, topic);
   strcat(output, buffer);
 }
-
-void Channel::createTopic(char* output, char* method, char* suffix) {
-  char buffer[sizeof(TOP_LEVEL) + 1 + sizeof(method) + 1 + sizeof(NAME) + 1 + sizeof(suffix) + 1 + sizeof(topic)];
-  strcpy(buffer, TOP_LEVEL);
-  strcat(buffer, SP);
-  strcat(buffer, method);
-  strcat(buffer, SP);
-  strcat(buffer, NAME);
-  strcat(buffer, " ");
-  strcat(buffer, suffix);
-  strcat(buffer, SP);
-  strcat(buffer, topic);
-  strcat(output, buffer);
-}
-

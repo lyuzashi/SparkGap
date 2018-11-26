@@ -2,12 +2,10 @@
 #define output_h
 
 #include "input.h"
-#include "mqtt.h"
 
 class Output : public Input {
   public:
-    Output(int pin, char* topic, char* suffix, MQTT *mqtt);
-    Output(int pin, char* topic, MQTT *mqtt);
+    Output(int pin, char* topic, char* suffix);
     Output(int pin, char* topic);
     virtual void set(uint8_t* payload, char* topic) = 0;
   private:

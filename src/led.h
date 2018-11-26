@@ -4,7 +4,6 @@
 #include <Arduino.h>
 #include "Ticker.h"
 #include "output.h"
-#include "mqtt.h"
 #define OFF 0
 #define ON 1
 #define WINK 2
@@ -16,10 +15,9 @@
 
 class LED: private Output {
   public:
-    LED(int pin, char* suffix, MQTT *mqtt) : Output(pin, LED_TOPIC, suffix, mqtt) {};
-    LED(char* suffix, MQTT *mqtt) : Output(LED_PIN, LED_TOPIC, suffix, mqtt) {};
-    LED(int pin, MQTT *mqtt) : Output(pin, LED_TOPIC, mqtt) {};
-    LED(MQTT *mqtt) : Output(LED_PIN, LED_TOPIC, mqtt) {};
+    LED(int pin, char* suffix) : Output(pin, LED_TOPIC, suffix) {};
+    LED(char* suffix) : Output(LED_PIN, LED_TOPIC, suffix) {};
+    LED(int pin) : Output(pin, LED_TOPIC) {};
     LED() : Output(LED_PIN, LED_TOPIC) {};
     void setup();
     void set(int state);

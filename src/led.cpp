@@ -4,7 +4,6 @@
 #include "stdlib_noniso.h"
 #include "defines.h"
 #include "led.h"
-#include "mqtt.h"
 #include "types.h"
 #include "mqtt-smarthome.h"
 

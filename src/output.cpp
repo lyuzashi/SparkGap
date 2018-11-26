@@ -3,11 +3,7 @@
 #include "mqtt.h"
 #include "mqtt-smarthome.h"
 
-Output::Output(int pin, char* topic, char* suffix, MQTT *mqtt) : Input(pin, topic, suffix, mqtt) {
-  init();
-};
-
-Output::Output(int pin, char* topic, MQTT *mqtt) : Input(pin, topic, mqtt) {
+Output::Output(int pin, char* topic, char* suffix) : Input(pin, topic, suffix) {
   init();
 };
 
