@@ -9,8 +9,8 @@
 
 WPS wps;
 DNSSD dnssd("mqtt", "tcp");
-MQTT mqtt;
-LED led(&mqtt);
+MQTT MQTT::instance;
+LED led;
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
@@ -60,7 +60,7 @@ void setup() {
   Serial.printf("Chip ID %d", ESP.getChipId());
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
-  mqtt.onStateChange(mqttState);
+  MQTT::instance.onStateChange(mqttState);
 }
 
 void loop() {
@@ -69,7 +69,7 @@ void loop() {
 
   // Apparently this needs to be throttled to prevent frequent reconnects
   // delay(100);
-  mqtt.loop();
+  MQTT::instance.loop();
 
   // led.set(ON);
   // delay(200);

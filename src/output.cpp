@@ -11,13 +11,17 @@ Output::Output(int pin, char* topic, MQTT *mqtt) : Input(pin, topic, mqtt) {
   init();
 };
 
+Output::Output(int pin, char* topic) : Input(pin, topic) {
+  init();
+};
+
 void Output::init() {
 
   createTopic(setTopic, SET);
 
   subscriptionTopics.push_back(setTopic);
 
-  mqtt->onMessage([this] (char* topic, uint8_t* payload, unsigned int length) {
+  MQTT::instance.onMessage([this] (char* topic, uint8_t* payload, unsigned int length) {
     if (strcmp (topic, this->setTopic) == 0) {
       set(payload, topic);
     };

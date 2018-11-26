@@ -8,6 +8,7 @@ class Output : public Input {
   public:
     Output(int pin, char* topic, char* suffix, MQTT *mqtt);
     Output(int pin, char* topic, MQTT *mqtt);
+    Output(int pin, char* topic);
     virtual void set(uint8_t* payload, char* topic) = 0;
   private:
     char setTopic[50];

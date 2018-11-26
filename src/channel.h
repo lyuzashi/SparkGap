@@ -7,6 +7,7 @@
 
 class Channel : public Setup {
   public:
+    Channel(int pin, char* topic);
     Channel(int pin, char* topic, MQTT *mqtt);
     Channel(int pin, char* topic, char* suffix, MQTT *mqtt);
     char* topic;

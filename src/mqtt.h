@@ -16,6 +16,7 @@ class MQTT {
     // boolean connect(const char* id);
     // boolean connect(const char* id, const char* user, const char* pass);
     static PubSubClient client;
+    static MQTT instance;
   private:
     std::vector<std::function<void(char*, uint8_t*, unsigned int)>> onMessageHandlers;
     std::vector<std::function<void(int)>> stateChange;

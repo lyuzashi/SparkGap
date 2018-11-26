@@ -20,6 +20,7 @@ class LED: private Output {
     LED(char* suffix, MQTT *mqtt) : Output(LED_PIN, LED_TOPIC, suffix, mqtt) {};
     LED(int pin, MQTT *mqtt) : Output(pin, LED_TOPIC, mqtt) {};
     LED(MQTT *mqtt) : Output(LED_PIN, LED_TOPIC, mqtt) {};
+    LED() : Output(LED_PIN, LED_TOPIC) {};
     void setup();
     void set(int state);
     void set(uint8_t* payload, char* topic);

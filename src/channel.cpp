@@ -9,8 +9,14 @@ Channel::Channel(int pin, char* topic, MQTT *mqtt) : Setup(), pin(pin), topic(to
   init();
 }
 
+
+Channel::Channel(int pin, char* topic) : Setup(), pin(pin), topic(topic) {
+  init();
+}
+
+
 void Channel::init() {
-  mqtt->onStateChange([this] (int mqttState) {
+  MQTT::instance.onStateChange([this] (int mqttState) {
     if(mqttState == MQTT_CONNECTED) {
       this->subscribe();
     } 
