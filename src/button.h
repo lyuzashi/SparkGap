@@ -18,6 +18,9 @@ class Button: public Input {
   private:
     int state;
     void changed();
+    unsigned long riseTime;
+    const unsigned long LONG_DELTA = 2000ul;
+    const unsigned long DEBOUNCE_DELTA = 100ul;
 };
 
 #endif

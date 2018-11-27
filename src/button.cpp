@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "Ticker.h"
+#include <FunctionalInterrupt.h>
 #include <functional>
 #include "stdlib_noniso.h"
 #include "defines.h"
@@ -9,16 +9,29 @@
 
 void Button::setup() {
   pinMode(pin, INPUT);
-  // attachInterrupt(digitalPinToInterrupt(pin), std::bind(&Button::changed, this), CHANGE);
+  attachInterrupt(digitalPinToInterrupt(pin), std::bind(&Button::changed, this), CHANGE);
 }
 
 char* Button::get(char* output) {
   return itoa(state, output, 10);
 }
 
-
 void Button::changed() {
   int newState = digitalRead(pin);
-  state = newState;
-  stateChange();
+  if (newState == LOW) {
+    // Rising edge
+    // Store time
+    riseTime = millis();
+  } else if (newState == HIGH) {
+    if (millis() - riseTime < DEBOUNCE_DELTA) {
+      return;
+    }
+    if (millis() - riseTime < LONG_DELTA) {
+      state = 1;
+      stateChange();
+      return;
+    }
+    state = 2;
+    stateChange();
+  }
 }
