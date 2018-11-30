@@ -8,7 +8,7 @@
 class MQTT {
   public:
     MQTT();
-    void onMessage(std::function<void(char*, uint8_t*, unsigned int)> callback);
+    void onMessage(std::function<void(char*, char*, unsigned int)> callback);
     void onStateChange(std::function<void(int)> callback);
     // void setServer(IPAddress ip, uint16_t port);
     boolean loop();
@@ -18,7 +18,7 @@ class MQTT {
     static PubSubClient client;
     static MQTT instance;
   private:
-    std::vector<std::function<void(char*, uint8_t*, unsigned int)>> onMessageHandlers;
+    std::vector<std::function<void(char*, char*, unsigned int)>> onMessageHandlers;
     std::vector<std::function<void(int)>> stateChange;
     void callbackMessage(char*, uint8_t*, unsigned int);
     int previousState;

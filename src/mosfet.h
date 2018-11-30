@@ -20,10 +20,10 @@ class MOSFET: private Output {
     MOSFET() : Output(MOSFET_PIN, MOSFET_TOPIC) {};
     void setup();
     void set(int state);
-    void set(uint8_t* payload, char* topic);
+    void set(char* payload, char* topic);
     char* get(char* output);
-  private:
     int state;
+  private:
 };
 
 #endif

@@ -16,12 +16,16 @@ void MOSFET::set(int newState) {
   if(newState != state) {
     analogWrite(pin, newState);
     state = newState;
+    Serial.println(newState);
+    Serial.println(state);
     stateChange();
   }
 }
 
-void MOSFET::set(uint8_t* payload, char* topic) {
-  set(atoi((const char*)payload));
+void MOSFET::set(char* payload, char* topic) {
+  Serial.print("New MOSFET state");
+  Serial.println(payload);
+  set(atoi(payload));
 }
 
 char* MOSFET::get(char* output) {

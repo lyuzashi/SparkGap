@@ -14,23 +14,25 @@ void Relay::setup() {
 void Relay::set(int newState) {
   // TODO check valid state
   if(newState != state) {
+    Serial.print("New Relay state");
+    Serial.println(newState);
     if (newState == ON) {
       if (level == NULL) {
-        digitalWrite(pin, HIGH);
+        digitalWrite(pin, LOW);
       } else {
-        analogWrite(pin, (int)level);
+        analogWrite(pin, *level);
       }
     } else if (newState == OFF) {
-      digitalWrite(pin, LOW);
+      digitalWrite(pin, HIGH);
     }
     state = newState;
     stateChange();
   }
 }
 
-void Relay::set(uint8_t* payload, char* topic) {
+void Relay::set(char* payload, char* topic) {
   // For PWM, can check topic for on/brightness
-  set(atoi((const char*)payload));
+  set(atoi(payload));
 }
 
 char* Relay::get(char* output) {

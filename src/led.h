@@ -21,7 +21,7 @@ class LED: private Output {
     LED() : Output(LED_PIN, LED_TOPIC) {};
     void setup();
     void set(int state);
-    void set(uint8_t* payload, char* topic);
+    void set(char* payload, char* topic);
     char* get(char* output);
   private:
     int state;

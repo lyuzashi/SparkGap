@@ -18,7 +18,7 @@ void Input::init() {
   subscriptionTopics.push_back(getTopic);
 
   // Register a new callback for MQTT messages, specific to this topic
-  MQTT::instance.onMessage([this] (char* topic, uint8_t* payload, unsigned int length) {
+  MQTT::instance.onMessage([this] (char* topic, char* payload, unsigned int length) {
     if (strcmp (topic, this->getTopic) == 0) {
       stateChange();
     };

@@ -37,9 +37,9 @@ void LED::set(int newState) {
   }
 }
 
-void LED::set(uint8_t* payload, char* topic) {
+void LED::set(char* payload, char* topic) {
   // For PWM, can check topic for on/brightness
-  set(atoi((const char*)payload));
+  set(atoi(payload));
 }
 
 char* LED::get(char* output) {

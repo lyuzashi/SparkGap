@@ -6,6 +6,7 @@
 #include "led.h"
 #include "relay.h"
 #include "button.h"
+#include "mosfet.h"
 #include "wps.h"
 #include "dnssd.h"
 #include "mqtt.h"
@@ -15,16 +16,22 @@ DNSSD dnssd("mqtt", "tcp");
 MQTT MQTT::instance;
 
 #ifdef TYPE_BASIC
-  LED led;
-  Relay relay;
+  // LED led;
+  // Relay relay;
+  MOSFET mosfet(13);
+  Relay relay(13, "", &mosfet.state);
   Button button;
+#endif
+
+#ifdef TYPE_MAGIC
+
 #endif
 
 
 void wpsState(int state) {
   Serial.printf("State %d\n", state);
   if (state == WPS_CONNECTED) {
-    led.set(OFF);
+    // led.set(OFF);
     Serial.println("Connected to WIFI, about to start discovery");
     dnssd.setup();
   }
