@@ -15,10 +15,10 @@
 
 class LED: private Output {
   public:
-    LED(int pin, char* suffix) : Output(pin, LED_TOPIC, suffix) {};
-    LED(char* suffix) : Output(LED_PIN, LED_TOPIC, suffix) {};
-    LED(int pin) : Output(pin, LED_TOPIC) {};
-    LED() : Output(LED_PIN, LED_TOPIC) {};
+    LED(int pin, char* suffix) : Output(pin, LED_TOPIC, suffix, true) {};
+    LED(char* suffix) : Output(LED_PIN, LED_TOPIC, suffix, true) {};
+    LED(int pin) : Output(pin, LED_TOPIC, true) {};
+    LED() : Output(LED_PIN, LED_TOPIC, true) {};
     void setup();
     void set(int state);
     void set(char* payload, char* topic);

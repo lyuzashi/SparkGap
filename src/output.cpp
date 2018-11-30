@@ -1,9 +1,10 @@
+#include "Arduino.h"
 #include "output.h"
 #include "input.h"
 #include "mqtt.h"
 #include "mqtt-smarthome.h"
 
-Output::Output(int pin, char* topic, char* suffix, bool invert) : invert(invert), Input(pin, topic, suffix) {
+Output::Output(int pin, char* topic, char* suffix, bool invert) : Input(pin, topic, suffix, invert) {
   init();
 };
 
@@ -11,7 +12,7 @@ Output::Output(int pin, char* topic, char* suffix) : Input(pin, topic, suffix) {
   init();
 };
 
-Output::Output(int pin, char* topic, bool invert) : invert(invert), Input(pin, topic) {
+Output::Output(int pin, char* topic, bool invert) : Input(pin, topic, invert) {
   init();
 };
 
@@ -32,3 +33,10 @@ void Output::init() {
   });
 };
 
+void Output::digitalWrite(uint8_t value) {
+  ::digitalWrite(pin, invert ? !value : value);
+}
+
+void Output::analogWrite(int value) {
+  ::analogWrite(pin, invert ? PWMRANGE - value : value);
+}

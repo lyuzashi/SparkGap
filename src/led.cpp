@@ -9,7 +9,7 @@
 
 void LED::setup() {
   pinMode(pin, OUTPUT);
-  digitalWrite(pin, HIGH);
+  digitalWrite(LOW);
 }
 
 void LED::set(int newState) {
@@ -18,9 +18,9 @@ void LED::set(int newState) {
     // Detatch any timers if set
     interval.detach();
     if (newState == ON) {
-      digitalWrite(pin, LOW);
+      digitalWrite(HIGH);
     } else if (newState == OFF) {
-      digitalWrite(pin, HIGH);
+      digitalWrite(LOW);
     }
     if (newState == BLINK) {
       interval.attach(0.3, std::bind(&LED::blink, this));
@@ -29,7 +29,7 @@ void LED::set(int newState) {
       interval.attach(0.1, std::bind(&LED::blink, this));
     }
     if (newState == WINK) {
-      digitalWrite(pin, HIGH);
+      digitalWrite(LOW);
       interval.attach(0.2, std::bind(&LED::wink, this, state));
     }
     state = newState;
@@ -49,14 +49,15 @@ char* LED::get(char* output) {
 void LED::blink() {
   if (state == BLINK || state == BLINK_FAST) {
     int blinkState = digitalRead(pin);
-    digitalWrite(pin, !blinkState);
+    digitalWrite(!blinkState);
   }
 }
 
 void LED::wink(int previousState) {
   if (state == WINK) {
+    // TODO digitalRead needs implimenting with invert support
     int blinkState = digitalRead(pin);
-    digitalWrite(pin, !blinkState);
+    digitalWrite(!blinkState);
     if (blinkState == LOW) {
       set(previousState);
     }

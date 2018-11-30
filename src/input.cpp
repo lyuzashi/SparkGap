@@ -7,7 +7,15 @@ Input::Input(int pin, char* topic, char* suffix) : Channel(pin, topic, suffix) {
   init();
 };
 
+Input::Input(int pin, char* topic, char* suffix, bool invert) : Channel(pin, topic, suffix, invert) {
+  init();
+};
+
 Input::Input(int pin, char* topic) : Channel(pin, topic) {
+  init();
+};
+
+Input::Input(int pin, char* topic, bool invert) : Channel(pin, topic, invert) {
   init();
 };
 

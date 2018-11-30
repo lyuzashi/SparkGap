@@ -10,7 +10,8 @@ class Output : public Input {
     Output(int pin, char* topic, bool invert);
     Output(int pin, char* topic);
     virtual void set(char* payload, char* topic) = 0;
-    bool invert = false;
+    void digitalWrite(uint8_t value);
+    void analogWrite(int value);
   private:
     char setTopic[50];
     void init();

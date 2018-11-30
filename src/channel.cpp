@@ -9,7 +9,15 @@ Channel::Channel(int pin, char* topic) : Setup(), pin(pin), topic(topic) {
   init();
 }
 
+Channel::Channel(int pin, char* topic, bool invert) : Setup(), pin(pin), topic(topic), invert(invert) {
+  init();
+}
+
 Channel::Channel(int pin, char* topic, char* suffix) : Setup(), pin(pin), topic(topic), suffix(suffix) {
+  init();
+}
+
+Channel::Channel(int pin, char* topic, char* suffix, bool invert) : Setup(), pin(pin), topic(topic), suffix(suffix), invert(invert) {
   init();
 }
 

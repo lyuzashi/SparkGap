@@ -8,7 +8,7 @@
 
 void Relay::setup() {
   pinMode(pin, OUTPUT);
-  digitalWrite(pin, LOW);
+  digitalWrite(LOW);
 }
 
 void Relay::set(int newState) {
@@ -18,12 +18,12 @@ void Relay::set(int newState) {
     Serial.println(newState);
     if (newState == ON) {
       if (level == NULL) {
-        digitalWrite(pin, LOW);
+        digitalWrite(LOW);
       } else {
-        analogWrite(pin, *level);
+        analogWrite(*level);
       }
     } else if (newState == OFF) {
-      digitalWrite(pin, HIGH);
+      digitalWrite(HIGH);
     }
     state = newState;
     stateChange();
