@@ -18,12 +18,12 @@ void Relay::set(int newState) {
     Serial.println(newState);
     if (newState == ON) {
       if (level == NULL) {
-        digitalWrite(LOW);
+        digitalWrite(HIGH);
       } else {
         analogWrite(*level);
       }
     } else if (newState == OFF) {
-      digitalWrite(HIGH);
+      digitalWrite(LOW);
     }
     state = newState;
     stateChange();

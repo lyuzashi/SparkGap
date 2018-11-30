@@ -8,13 +8,13 @@
 
 void MOSFET::setup() {
   pinMode(pin, OUTPUT);
-  analogWrite(pin, 0);
+  analogWrite(0);
 }
 
 void MOSFET::set(int newState) {
   // TODO check valid state
   if(newState != state) {
-    analogWrite(pin, newState);
+    analogWrite(newState);
     state = newState;
     Serial.println(newState);
     Serial.println(state);

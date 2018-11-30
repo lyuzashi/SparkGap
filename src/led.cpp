@@ -48,15 +48,14 @@ char* LED::get(char* output) {
 
 void LED::blink() {
   if (state == BLINK || state == BLINK_FAST) {
-    int blinkState = digitalRead(pin);
+    int blinkState = digitalRead();
     digitalWrite(!blinkState);
   }
 }
 
 void LED::wink(int previousState) {
   if (state == WINK) {
-    // TODO digitalRead needs implimenting with invert support
-    int blinkState = digitalRead(pin);
+    int blinkState = digitalRead();
     digitalWrite(!blinkState);
     if (blinkState == LOW) {
       set(previousState);

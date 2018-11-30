@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #include "input.h"
 #include "channel.h"
 #include "mqtt.h"
@@ -37,6 +38,11 @@ void Input::stateChange() {
   // How to execute this method in multi-inheritance?
   // TODO only publish when clinet connected 
   char buffer[16];
+  Serial.println(getTopic);
+  Serial.println(statusTopic);
   MQTT::client.publish(statusTopic, get(buffer));
 };
 
+int Input::digitalRead() {
+  return invert ? !::digitalRead(pin) : ::digitalRead(pin);
+};

@@ -17,7 +17,7 @@ char* Motion::get(char* output) {
 }
 
 void Motion::changed() {
-  int newState = digitalRead(pin);
+  int newState = digitalRead();
   state = newState;
   stateChange();
 }

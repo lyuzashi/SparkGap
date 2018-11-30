@@ -11,9 +11,10 @@ class Input : public Channel {
     Input(int pin, char* topic);
     virtual char* get(char* topic) = 0;
     void stateChange();
+    int digitalRead();
   private:
     char getTopic[50];
-    char statusTopic[50];
+    char statusTopic[70];
     void init();
 };
 

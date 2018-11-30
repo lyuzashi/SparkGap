@@ -17,7 +17,7 @@ char* Button::get(char* output) {
 }
 
 void Button::changed() {
-  int newState = digitalRead(pin);
+  int newState = digitalRead();
   if (newState == LOW) {
     // Rising edge
     // Store time

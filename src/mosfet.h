@@ -14,10 +14,10 @@
 
 class MOSFET: private Output {
   public:
-    MOSFET(int pin, char* suffix) : Output(pin, MOSFET_TOPIC, suffix) {};
-    MOSFET(char* suffix) : Output(MOSFET_PIN, MOSFET_TOPIC, suffix) {};
-    MOSFET(int pin) : Output(pin, MOSFET_TOPIC) {};
-    MOSFET() : Output(MOSFET_PIN, MOSFET_TOPIC) {};
+    MOSFET(int pin, char* suffix) : Output(pin, MOSFET_TOPIC, suffix, true) {};
+    MOSFET(char* suffix) : Output(MOSFET_PIN, MOSFET_TOPIC, suffix, true) {};
+    MOSFET(int pin) : Output(pin, MOSFET_TOPIC, true) {};
+    MOSFET() : Output(MOSFET_PIN, MOSFET_TOPIC, true) {};
     void setup();
     void set(int state);
     void set(char* payload, char* topic);

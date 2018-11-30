@@ -37,22 +37,22 @@ void Channel::subscribe() {
 }
 
 void Channel::createTopic(char* output, char* method) {
-  boolean hasSuffix = strcmp(suffix, "") != 0;
-  int bufferSize = sizeof(TOP_LEVEL) + 1 + sizeof(method) + 1 + sizeof(NAME) + 1 + sizeof(topic);
+  bool hasSuffix = strcmp(suffix, "") != 0;
+  // int bufferSize = sizeof(TOP_LEVEL) + 1 + sizeof(method) + 1 + sizeof(NAME) + 1 + sizeof(topic);
+  // if (hasSuffix) {
+  //   bufferSize += 1 + sizeof(suffix);
+  // }
+  // char buffer[bufferSize];
+  strcpy(output, TOP_LEVEL);
+  strcat(output, SP);
+  strcat(output, method);
+  strcat(output, SP);
+  strcat(output, NAME);
   if (hasSuffix) {
-    bufferSize += 1 + sizeof(suffix);
+    strcat(output, " ");
+    strcat(output, suffix);
   }
-  char buffer[bufferSize];
-  strcpy(buffer, TOP_LEVEL);
-  strcat(buffer, SP);
-  strcat(buffer, method);
-  strcat(buffer, SP);
-  strcat(buffer, NAME);
-  if (hasSuffix) {
-    strcat(buffer, " ");
-    strcat(buffer, suffix);
-  }
-  strcat(buffer, SP);
-  strcat(buffer, topic);
-  strcat(output, buffer);
+  strcat(output, SP);
+  strcat(output, topic);
+  // strcat(output, buffer);
 }
