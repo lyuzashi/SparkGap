@@ -16,30 +16,28 @@ DNSSD dnssd;
 MQTT MQTT::instance;
 
 #ifdef TYPE_BASIC
-  // LED led;
-  // Relay relay;
-  // Link needs to go both ways, so that brightness will do nothing while off
+  LED led;
+  Relay relay;
+  Button button;
+#endif
+
+#ifdef TYPE_MAGIC
   MOSFET mosfet(13);
   Relay relay(13);
   Button button;
 #endif
 
-#ifdef TYPE_MAGIC
-
-#endif
-
 
 void wpsState(int state) {
-  Serial.printf("State %d\n", state);
   if (state == WPS_CONNECTED) {
-    // led.set(OFF);
     Serial.println("Connected to WIFI, about to start discovery");
     dnssd.setup();
+  } else {
+    led.set(BLINK);
   }
 }
 
 void dnssdState(int state) {
-  Serial.printf("MDNS state %d\n", state);
   if (state == DNSSD_IDLE) {
     dnssd.find();
   }
@@ -50,24 +48,16 @@ void dnssdState(int state) {
     dnssd.forget();
   }
   if (state == DNSSD_FOUND) {
-    Serial.printf("MDNS found port %d\n", dnssd.port);
-    Serial.print(dnssd.ip);
     MQTT::client.setServer(dnssd.ip, dnssd.port);
-    if (MQTT::client.connect(NAME, NAME, String(ESP.getChipId()).c_str())) {
-      Serial.println("connected");
-      // client.publish("outTopic", "hello world");
-      MQTT::client.subscribe("inTopic");
-    } else {
-      Serial.print("failed, rc=");
-      // Serial.print(client.state());
-    }
-    
+    MQTT::client.connect(NAME, NAME, String(ESP.getChipId()).c_str());
+  } else {
+    led.set(BLINK_FAST);
   }
 }
 
 void buttonState(int state) {
   if (state == LONG_PRESS) {
-    Serial.println("Reset");
+    led.set(BLINK_FAST);
     wps.reset();
   }
 }
@@ -77,32 +67,30 @@ void mqttState(int state) {
     dnssd.forget();
   }
   if (state == MQTT_CONNECTED) {
-    // led.set(OFF);
+    led.set(OFF);
+    led.set(WINK);
   }
 }
 
 void setup() {
-  Setup::run();
-  mosfet.linkRelay(&relay);
   Serial.begin(115200);
-  Serial.printf("Chip ID %d", ESP.getChipId());
+  Setup::run();
+
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
+
   MQTT::instance.onStateChange(mqttState);
-  button.setCallback(buttonState);
+
+  #ifdef TYPE_BASIC
+    button.setCallback(buttonState);
+  #endif
+
+  #ifdef TYPE_MAGIC
+    mosfet.linkRelay(&relay);
+  #endif
 }
 
 void loop() {
-  
   wps.loop();
-
-  // Apparently this needs to be throttled to prevent frequent reconnects
-  // delay(100);
   MQTT::instance.loop();
-
-  // led.set(ON);
-  // delay(200);
-  // led.set(OFF);
-  // delay(200);
-
 }
