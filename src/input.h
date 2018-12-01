@@ -12,10 +12,13 @@ class Input : public Channel {
     virtual char* get(char* topic) = 0;
     void stateChange();
     int digitalRead();
+    void setCallback(void (*callback)(int));
+    int state;
   private:
     char getTopic[50];
     char statusTopic[70];
     void init();
+    std::vector<void (*)(int)> callbacks;
 };
 
 #endif

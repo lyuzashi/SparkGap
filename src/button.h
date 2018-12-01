@@ -7,6 +7,9 @@
 #define BUTTON_TOPIC "button"
 #define BUTTON_PIN 0
 
+#define PRESS 1
+#define LONG_PRESS 2
+
 class Button: public Input {
   public:
     Button(int pin, char* suffix) : Input(pin, BUTTON_TOPIC, suffix) {};
@@ -16,11 +19,11 @@ class Button: public Input {
     void setup();
     char* get(char* output);
   private:
-    int state;
+    // int state;
     void changed();
     unsigned long riseTime;
-    const unsigned long LONG_DELTA = 2000ul;
-    const unsigned long DEBOUNCE_DELTA = 100ul;
+    const unsigned long LONG_DELTA = 1000ul;
+    const unsigned long DEBOUNCE_DELTA = 20ul;
 };
 
 #endif

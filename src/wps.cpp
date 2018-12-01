@@ -50,8 +50,9 @@ void WPS::setup() {
 }
 
 void WPS::reset() {
+  WiFiClient::stopAll();
   WiFi.disconnect();
-  // Might need ESP.reset() too?
+  delay(1000);
 }
 
 void WPS::setCallback(void (*callback)(int)) {

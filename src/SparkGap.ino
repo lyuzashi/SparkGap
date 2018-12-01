@@ -18,8 +18,9 @@ MQTT MQTT::instance;
 #ifdef TYPE_BASIC
   // LED led;
   // Relay relay;
+  // Link needs to go both ways, so that brightness will do nothing while off
   MOSFET mosfet(13);
-  Relay relay(13, "", &mosfet.state);
+  Relay relay(13);
   Button button;
 #endif
 
@@ -46,7 +47,7 @@ void dnssdState(int state) {
     dnssd.find();
   }
   if (state == DNSSD_FAILED) {
-    // Gets in a loop if this is attempted again :(
+    dnssd.forget();
   }
   if (state == DNSSD_FOUND) {
     Serial.printf("MDNS found port %d\n", dnssd.port);
@@ -64,19 +65,31 @@ void dnssdState(int state) {
   }
 }
 
+void buttonState(int state) {
+  if (state == LONG_PRESS) {
+    Serial.println("Reset");
+    wps.reset();
+  }
+}
+
 void mqttState(int state) {
   if (state == MQTT_CONNECTION_LOST || state == MQTT_CONNECT_FAILED || state == MQTT_DISCONNECTED) {
     dnssd.forget();
+  }
+  if (state == MQTT_CONNECTED) {
+    // led.set(OFF);
   }
 }
 
 void setup() {
   Setup::run();
+  mosfet.linkRelay(&relay);
   Serial.begin(115200);
   Serial.printf("Chip ID %d", ESP.getChipId());
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
   MQTT::instance.onStateChange(mqttState);
+  button.setCallback(buttonState);
 }
 
 void loop() {

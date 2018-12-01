@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "output.h"
+#include "relay.h"
 
 #define MOSFET_TOPIC "brightness"
 #define MOSFET_PIN 12
@@ -23,7 +24,9 @@ class MOSFET: private Output {
     void set(char* payload, char* topic);
     char* get(char* output);
     int state;
+    void linkRelay(Relay* relay);
   private:
+    int *switchState = NULL;
 };
 
 #endif

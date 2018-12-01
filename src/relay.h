@@ -9,9 +9,8 @@
 #define RELAY_TOPIC "on"
 #define RELAY_PIN 12
 
-class Relay: private Output {
+class Relay: public Output {
   public:
-    Relay(int pin, char* suffix, int *level) : level(level), Output(pin, RELAY_TOPIC, suffix, true) {};
     Relay(int pin, char* suffix) : Output(pin, RELAY_TOPIC, suffix, true) {};
     Relay(char* suffix) : Output(RELAY_PIN, RELAY_TOPIC, suffix, true) {};
     Relay(int pin) : Output(pin, RELAY_TOPIC, true) {};
@@ -20,9 +19,8 @@ class Relay: private Output {
     void set(int state);
     void set(char* payload, char* topic);
     char* get(char* output);
-  private:
-    int state;
     int *level = NULL;
+  private:
 };
 
 #endif

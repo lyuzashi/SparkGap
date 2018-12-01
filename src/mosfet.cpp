@@ -3,6 +3,7 @@
 #include "stdlib_noniso.h"
 #include "defines.h"
 #include "mosfet.h"
+#include "relay.h"
 #include "types.h"
 #include "mqtt-smarthome.h"
 
@@ -14,20 +15,23 @@ void MOSFET::setup() {
 void MOSFET::set(int newState) {
   // TODO check valid state
   if(newState != state) {
-    analogWrite(newState);
+    if (*switchState != NULL && *switchState == ON) {
+      analogWrite(newState);
+    }
     state = newState;
-    Serial.println(newState);
-    Serial.println(state);
     stateChange();
   }
 }
 
 void MOSFET::set(char* payload, char* topic) {
-  Serial.print("New MOSFET state");
-  Serial.println(payload);
   set(atoi(payload));
 }
 
 char* MOSFET::get(char* output) {
   return itoa(state, output, 10);
+}
+
+void MOSFET::linkRelay(Relay* relay) {
+  switchState = &relay->state;
+  relay->level = &state;
 }

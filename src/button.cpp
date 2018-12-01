@@ -27,11 +27,11 @@ void Button::changed() {
       return;
     }
     if (millis() - riseTime < LONG_DELTA) {
-      state = 1;
+      state = PRESS;
       stateChange();
       return;
     }
-    state = 2;
+    state = LONG_PRESS;
     stateChange();
   }
 }

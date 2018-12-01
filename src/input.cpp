@@ -35,12 +35,17 @@ void Input::init() {
 };
 
 void Input::stateChange() {
-  // How to execute this method in multi-inheritance?
   // TODO only publish when clinet connected 
   char buffer[16];
-  Serial.println(getTopic);
-  Serial.println(statusTopic);
   MQTT::client.publish(statusTopic, get(buffer));
+
+  for(unsigned int i = 0; i < callbacks.size(); ++i) {
+    callbacks[i](state);
+  }
+};
+
+void Input::setCallback(void (*callback)(int)) {
+  callbacks.push_back(callback);
 };
 
 int Input::digitalRead() {
