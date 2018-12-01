@@ -12,7 +12,7 @@
 #include "mqtt.h"
 
 WPS wps;
-DNSSD dnssd("mqtt", "tcp");
+DNSSD dnssd;
 MQTT MQTT::instance;
 
 #ifdef TYPE_BASIC

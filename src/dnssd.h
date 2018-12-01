@@ -14,7 +14,8 @@
 
 class DNSSD {
   public:
-    DNSSD(char *service, char *protocol);
+    DNSSD() {};
+    DNSSD(char *service, char *protocol) : service(service), protocol(protocol) {};
     void setup();
     void find();
     void forget();
@@ -25,8 +26,8 @@ class DNSSD {
     int state;
     std::vector<void (*)(int)> stateChange;
     void updateState(int newState);
-    char* _service;
-    char* _protocol;
+    char* service = "mqtt";
+    char* protocol = "tcp";
 };
 
 #endif
