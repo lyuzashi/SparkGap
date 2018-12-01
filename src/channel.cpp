@@ -31,7 +31,6 @@ void Channel::init() {
 
 void Channel::subscribe() {
   for(unsigned int i = 0; i < subscriptionTopics.size(); ++i) {
-    Serial.println(subscriptionTopics[i]);
     MQTT::client.subscribe(subscriptionTopics[i]);
   }
 }

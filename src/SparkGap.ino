@@ -30,7 +30,6 @@ MQTT MQTT::instance;
 
 void wpsState(int state) {
   if (state == WPS_CONNECTED) {
-    Serial.println("Connected to WIFI, about to start discovery");
     dnssd.setup();
   } else {
     led.set(BLINK);

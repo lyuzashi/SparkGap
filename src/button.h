@@ -23,7 +23,7 @@ class Button: public Input {
     void changed();
     unsigned long riseTime;
     const unsigned long LONG_DELTA = 1000ul;
-    const unsigned long DEBOUNCE_DELTA = 20ul;
+    const unsigned long DEBOUNCE_DELTA = 10ul;
 };
 
 #endif

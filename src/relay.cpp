@@ -14,8 +14,6 @@ void Relay::setup() {
 void Relay::set(int newState) {
   // TODO check valid state
   if(newState != state) {
-    Serial.print("New Relay state");
-    Serial.println(newState);
     if (newState == ON) {
       if (level == NULL) {
         digitalWrite(HIGH);

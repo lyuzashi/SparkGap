@@ -30,7 +30,6 @@ boolean MQTT::loop() {
   if (previousState != client.state()) {
     previousState = client.state();
     for(unsigned int i = 0; i < stateChange.size(); ++i) {
-      Serial.printf("sending state %d to cb %d\n", previousState, i);
       stateChange[i](previousState);
     }
   }
