@@ -54,13 +54,6 @@ void dnssdState(int state) {
   }
 }
 
-void buttonState(int state) {
-  if (state == LONG_PRESS) {
-    led.set(BLINK_FAST);
-    wps.reset();
-  }
-}
-
 void mqttState(int state) {
   if (state == MQTT_CONNECTION_LOST || state == MQTT_CONNECT_FAILED || state == MQTT_DISCONNECTED) {
     dnssd.forget();
@@ -81,7 +74,7 @@ void setup() {
   MQTT::instance.onStateChange(mqttState);
 
   #ifdef TYPE_BASIC
-    button.setCallback(buttonState);
+    button.setCallback([] (int state) { if (state == PRESS) { relay.set(!relay.state); } });
   #endif
 
   #ifdef TYPE_MAGIC

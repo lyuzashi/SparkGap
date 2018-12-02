@@ -8,7 +8,7 @@
 #include "mqtt-smarthome.h"
 
 void Button::setup() {
-  pinMode(pin, INPUT);
+  pinMode(pin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(pin), std::bind(&Button::changed, this), CHANGE);
 }
 
@@ -23,15 +23,18 @@ void Button::changed() {
     // Store time
     riseTime = millis();
   } else if (newState == HIGH) {
-    if (millis() - riseTime < DEBOUNCE_DELTA) {
+    if ((millis() - riseTime) < DEBOUNCE_DELTA) {
+      riseTime = millis();
       return;
     }
-    if (millis() - riseTime < LONG_DELTA) {
+    if ((millis() - riseTime) < LONG_DELTA) {
       state = PRESS;
       stateChange();
+      riseTime = millis();
       return;
     }
     state = LONG_PRESS;
     stateChange();
+    riseTime = millis();
   }
 }

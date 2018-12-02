@@ -57,7 +57,7 @@ void LED::wink(int previousState) {
   if (state == WINK) {
     int blinkState = digitalRead();
     digitalWrite(!blinkState);
-    if (blinkState == LOW) {
+    if (blinkState == HIGH) {
       set(previousState);
     }
   }

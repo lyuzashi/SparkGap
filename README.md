@@ -6,12 +6,19 @@ $ git submodule update
 $ cd utils/esp8266/tools
 $ ./get.py
 $ cd ../../../
-$ make flash
+$ NAME=DeviceName TYPE=BASIC make flash
 ```
 
 GPIO0 must be held low on power on to reset into flash mode.
 
 This can be done on a Sonoff Basic by holding the reset button.
+
+`NAME` is used for MQTT and WiFi to identify the device on the network
+
+`TYPE` can be one of
+* `BASIC` for Sonoff Basic
+* `FOUR` for Sonoff 4 Channel
+* `MAGIC` for Magic Home LED controller
 
 ## Build
 
@@ -67,6 +74,7 @@ arduino --config-file ./.cli-config.yml compile --fqbn esp8266:esp8266:generic S
   - Magic Home (ESP8285)
 * Follows the 
 [MQTT Smarthome Architecture](https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md)
+* Press button to toggle relay (basic and 4 channel) as a local backup switch
 
 ## MQTT Topics
 

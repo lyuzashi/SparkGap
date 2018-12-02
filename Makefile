@@ -17,9 +17,10 @@ FLASH_DEF=1M0
 FLASH_MODE=dout
 LWIP_VARIANT=Prebuilt (v1.4 Higher Bandwidth)
 
-NAME=GardenLights
+# NAME=GardenLights
+# TYPE=BASIC
 
-BUILD_EXTRA_FLAGS="-DTYPE_BASIC"
+BUILD_EXTRA_FLAGS="-DTYPE_$(TYPE)"
 BUILD_EXTRA_FLAGS+="-DNAME=\"$(NAME)\""
 
 include $(ROOT)/utils/makeEspArduino/makeEspArduino.mk

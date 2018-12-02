@@ -11,10 +11,10 @@
 
 class Relay: public Output {
   public:
-    Relay(int pin, char* suffix) : Output(pin, RELAY_TOPIC, suffix, true) {};
-    Relay(char* suffix) : Output(RELAY_PIN, RELAY_TOPIC, suffix, true) {};
-    Relay(int pin) : Output(pin, RELAY_TOPIC, true) {};
-    Relay() : Output(RELAY_PIN, RELAY_TOPIC, true) {};
+    Relay(int pin, char* suffix) : Output(pin, RELAY_TOPIC, suffix) {};
+    Relay(char* suffix) : Output(RELAY_PIN, RELAY_TOPIC, suffix) {};
+    Relay(int pin) : Output(pin, RELAY_TOPIC) {};
+    Relay() : Output(RELAY_PIN, RELAY_TOPIC) {};
     void setup();
     void set(int state);
     void set(char* payload, char* topic);
