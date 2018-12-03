@@ -22,8 +22,12 @@ MQTT MQTT::instance;
 #endif
 
 #ifdef TYPE_MAGIC
-  MOSFET mosfet(13);
-  Relay relay(13);
+  MOSFET mosfetA(12, "1");
+  Relay relayA(12, "1");
+  MOSFET mosfetB(13, "2");
+  Relay relayB(13, "2");
+  MOSFET mosfetC(5, "3");
+  Relay relayC(5, "3");
   Button button;
 #endif
 
@@ -78,7 +82,22 @@ void setup() {
   #endif
 
   #ifdef TYPE_MAGIC
-    mosfet.linkRelay(&relay);
+    mosfetA.linkRelay(&relayA);
+    mosfetB.linkRelay(&relayB);
+    mosfetC.linkRelay(&relayC);
+    button.setCallback([] (int state) {
+      if (state == PRESS) {
+        // If any relays are on, toggle to off, otherwise turn all on
+        int newRelayState = (
+          relayA.state == ON || 
+          relayB.state == ON ||
+          relayC.state == ON
+          ) ? OFF : ON ;
+        relayA.set(newRelayState);
+        relayB.set(newRelayState);
+        relayC.set(newRelayState);
+      } 
+    });
   #endif
 }
 
