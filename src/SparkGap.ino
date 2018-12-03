@@ -10,6 +10,7 @@
 #include "wps.h"
 #include "dnssd.h"
 #include "mqtt.h"
+#include "loop-queue.h"
 
 WPS wps;
 DNSSD dnssd;
@@ -104,4 +105,5 @@ void setup() {
 void loop() {
   wps.loop();
   MQTT::instance.loop();
+  LoopQueue::loop();
 }
