@@ -22,6 +22,18 @@ MQTT MQTT::instance;
   Button button;
 #endif
 
+#ifdef TYPE_FOUR
+  LED led;
+  Relay relay1("1");
+  Relay relay2(5, "2");
+  Relay relay3(4, "3");
+  Relay relay4(15, "4");
+  Button button1("1");
+  Button button2(9, "2");
+  Button button3(10, "3");
+  Button button4(14, "4");
+#endif
+
 #ifdef TYPE_MAGIC
   MOSFET mosfetA(12, "1");
   Relay relayA(12, "1");
@@ -80,6 +92,13 @@ void setup() {
 
   #ifdef TYPE_BASIC
     button.setCallback([] (int state) { if (state == PRESS) { relay.set(!relay.state); } });
+  #endif
+
+  #ifdef TYPE_FOUR
+    button1.setCallback([] (int state) { if (state == PRESS) { relay1.set(!relay1.state); } });
+    button2.setCallback([] (int state) { if (state == PRESS) { relay2.set(!relay2.state); } });
+    button3.setCallback([] (int state) { if (state == PRESS) { relay3.set(!relay3.state); } });
+    button4.setCallback([] (int state) { if (state == PRESS) { relay4.set(!relay4.state); } });
   #endif
 
   #ifdef TYPE_MAGIC
