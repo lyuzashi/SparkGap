@@ -1,6 +1,7 @@
 #include <ESP8266mDNS.h>
 #include "defines.h"
 #include "dnssd.h"
+#include "loop-queue.h";
 
 void DNSSD::setup() {
   updateState(DNSSD_STARTING);
@@ -38,7 +39,8 @@ void DNSSD::updateState(int newState) {
   if (state != newState) {
     state = newState;
     for(unsigned int i = 0; i < stateChange.size(); ++i) {
-      stateChange[i](newState);
+      std::function<void(int)> method = stateChange[i];
+      LoopQueue::onLoop([newState, method] () { method(newState); } );
     }
   }
 }

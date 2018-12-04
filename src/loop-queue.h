@@ -11,8 +11,6 @@ class LoopQueue {
   public:
     static void onLoop(std::function<void()> callback);
     static boolean loop();
-  private:
-    static std::vector<std::function<void()>> onLoopHandlers;
 };
 
 #endif
