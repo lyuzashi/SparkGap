@@ -1,5 +1,6 @@
 #include "defines.h"
 #include "mqtt.h"
+#include "loop-queue.h"
 #include <PubSubClient.h>
 #include <ESP8266WiFi.h>
 
@@ -28,9 +29,11 @@ void MQTT::callbackMessage(char* topic, uint8_t* payload, unsigned int length) {
 
 boolean MQTT::loop() {
   if (previousState != client.state()) {
-    previousState = client.state();
+    int newState = client.state();
+    previousState = newState;
     for(unsigned int i = 0; i < stateChange.size(); ++i) {
-      stateChange[i](previousState);
+      std::function<void(int)> method = stateChange[i];
+      LoopQueue::onLoop([newState, method] () { method(newState); } );
     }
   }
   return client.loop();
