@@ -1,5 +1,6 @@
 #include "defines.h"
 #include "wps.h"
+#include "loop-queue.h"
 #include <ESP8266WiFi.h>
 
 WPS::WPS() {
@@ -63,7 +64,8 @@ void WPS::updateState(int newState) {
   if (state != newState) {
     state = newState;
     for(unsigned int i = 0; i < stateChange.size(); ++i) {
-      stateChange[i](newState);
+      std::function<void(int)> method = stateChange[i];
+      LoopQueue::onLoop([newState, method] () { method(newState); } );
     }
   }
 }
