@@ -123,6 +123,5 @@ void setup() {
 
 void loop() {
   wps.loop();
-  MQTT::instance.loop();
   LoopQueue::loop();
 }

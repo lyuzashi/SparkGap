@@ -1,6 +1,7 @@
 #include "defines.h"
 #include "mqtt.h"
 #include "loop-queue.h"
+#include <functional>
 #include <PubSubClient.h>
 #include <ESP8266WiFi.h>
 
@@ -13,6 +14,7 @@ MQTT::MQTT() {
     this->callbackMessage(topic, payload, length); 
   });
   previousState = MQTT_DISCONNECTED;
+  LoopQueue::onEveryLoop(std::bind(&MQTT::loop, this));
 }
 
 void MQTT::onMessage(std::function<void(char*, char*, unsigned int)> callback) {

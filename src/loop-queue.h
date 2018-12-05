@@ -10,7 +10,10 @@
 class LoopQueue {
   public:
     static void onLoop(std::function<void()> callback);
+    static void onEveryLoop(std::function<void()> callback);
     static boolean loop();
+    static std::vector<std::function<void()>> onLoopHandlers;
+    static std::vector<std::function<void()>> onEveryLoopHandlers;
 };
 
 #endif
