@@ -1,11 +1,13 @@
 #include "defines.h"
 #include "wps.h"
 #include "loop-queue.h"
+#include <functional>
 #include <ESP8266WiFi.h>
 
 WPS::WPS() {
   WiFi.hostname(NAME);
   WiFi.mode(WIFI_STA);
+  LoopQueue::onEveryLoop(std::bind(&WPS::loop, this));
 }
 
 void WPS::loop() {

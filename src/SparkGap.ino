@@ -87,7 +87,6 @@ void setup() {
 
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
-
   MQTT::instance.onStateChange(mqttState);
 
   #ifdef TYPE_BASIC
@@ -122,6 +121,5 @@ void setup() {
 }
 
 void loop() {
-  wps.loop();
   LoopQueue::loop();
 }
