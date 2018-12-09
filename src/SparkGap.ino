@@ -55,10 +55,10 @@ void wpsState(int state) {
 
 void dnssdState(int state) {
   if (state == DNSSD_IDLE) {
-    dnssd.find();
+    LoopQueue::onLoop([] () { dnssd.find(); }, 1500);
   }
   if (state == DNSSD_NOT_FOUND) {
-    dnssd.find();
+    dnssd.forget();
   }
   if (state == DNSSD_FAILED) {
     dnssd.forget();
@@ -72,7 +72,8 @@ void dnssdState(int state) {
 }
 
 void mqttState(int state) {
-  if (state == MQTT_CONNECTION_LOST || state == MQTT_CONNECT_FAILED || state == MQTT_DISCONNECTED) {
+  if (state == MQTT_CONNECTION_TIMEOUT || state == MQTT_CONNECTION_LOST || state == MQTT_CONNECT_FAILED || state == MQTT_DISCONNECTED) {
+    MQTT::client.disconnect();
     dnssd.forget();
   }
   if (state == MQTT_CONNECTED) {
@@ -82,12 +83,11 @@ void mqttState(int state) {
 }
 
 void setup() {
-  Serial.begin(115200);
-  Setup::run();
-
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
   MQTT::instance.onStateChange(mqttState);
+
+  Setup::run();
 
   #ifdef TYPE_BASIC
     button.setCallback([] (int state) { if (state == PRESS) { relay.set(!relay.state); } });

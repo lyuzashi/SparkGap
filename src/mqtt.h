@@ -21,7 +21,7 @@ class MQTT {
     std::vector<std::function<void(char*, char*, unsigned int)>> onMessageHandlers;
     std::vector<std::function<void(int)>> stateChange;
     void callbackMessage(char*, uint8_t*, unsigned int);
-    int previousState;
+    int previousState = NULL;
 };
 
 #endif

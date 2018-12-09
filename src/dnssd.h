@@ -23,7 +23,7 @@ class DNSSD {
     uint16_t port;
     void setCallback(void (*callback)(int));
   private:
-    int state;
+    int state = NULL;
     std::vector<void (*)(int)> stateChange;
     void updateState(int newState);
     char* service = "mqtt";
