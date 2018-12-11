@@ -75,6 +75,7 @@ arduino --config-file ./.cli-config.yml compile --fqbn esp8266:esp8266:generic S
 * Follows the 
 [MQTT Smarthome Architecture](https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md)
 * Press button to toggle relay (basic and 4 channel) as a local backup switch
+* Press and hold button (basic) to reset WPS and MQTT settings
 
 ## MQTT Topics
 

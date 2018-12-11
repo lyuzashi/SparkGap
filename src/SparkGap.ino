@@ -90,7 +90,10 @@ void setup() {
   Setup::run();
 
   #ifdef TYPE_BASIC
-    button.setCallback([] (int state) { if (state == PRESS) { relay.set(!relay.state); } });
+    button.setCallback([] (int state) {
+      if (state == PRESS) { relay.set(!relay.state); } 
+      if (state == LONG_PRESS) { wps.reset(); }
+    });
   #endif
 
   #ifdef TYPE_FOUR

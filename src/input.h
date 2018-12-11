@@ -11,6 +11,7 @@ class Input : public Channel {
     Input(int pin, char* topic);
     virtual char* get(char* topic) = 0;
     void stateChange();
+    void stateChange(int newState);
     int digitalRead();
     void setCallback(void (*callback)(int));
     int state;

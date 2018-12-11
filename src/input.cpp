@@ -44,6 +44,11 @@ void Input::stateChange() {
   }
 };
 
+void Input::stateChange(int newState) {
+  state = newState;
+  stateChange();
+};
+
 void Input::setCallback(void (*callback)(int)) {
   callbacks.push_back(callback);
 };
