@@ -21,7 +21,11 @@ void Relay::set(int newState) {
         analogWrite(*level);
       }
     } else if (newState == OFF) {
-      digitalWrite(LOW);
+      if (level == NULL) {
+        digitalWrite(LOW);
+      } else {
+        analogWrite(0);
+      }
     }
     state = newState;
     stateChange();

@@ -6,10 +6,16 @@
 #include "relay.h"
 #include "types.h"
 #include "mqtt-smarthome.h"
+#include "default.h"
 
 void MOSFET::setup() {
   pinMode(pin, OUTPUT);
   analogWrite(0);
+  defaultBrightness.onChange = [this] (int value) {
+    if (state == 0) {
+      relayState = value;
+    }
+  };
 }
 
 void MOSFET::set(int newState) {
@@ -20,6 +26,7 @@ void MOSFET::set(int newState) {
     }
     state = newState;
     stateChange();
+    relayState = state == 0 ? defaultBrightness.get() : state;
   }
 }
 
@@ -33,5 +40,5 @@ char* MOSFET::get(char* output) {
 
 void MOSFET::linkRelay(Relay* relay) {
   switchState = &relay->state;
-  relay->level = &state;
+  relay->level = &relayState;
 }

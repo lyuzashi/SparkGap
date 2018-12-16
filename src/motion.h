@@ -5,7 +5,7 @@
 #include "input.h"
 
 #define MOTION_TOPIC "motion"
-#define MOTION_PIN 15
+#define MOTION_PIN 4
 
 class Motion: public Input {
   public:

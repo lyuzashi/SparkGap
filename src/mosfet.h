@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "output.h"
 #include "relay.h"
+#include "default.h"
 
 #define MOSFET_TOPIC "brightness"
 #define MOSFET_PIN 12
@@ -15,10 +16,10 @@
 
 class MOSFET: private Output {
   public:
-    MOSFET(int pin, char* suffix) : Output(pin, MOSFET_TOPIC, suffix, true) {};
-    MOSFET(char* suffix) : Output(MOSFET_PIN, MOSFET_TOPIC, suffix, true) {};
-    MOSFET(int pin) : Output(pin, MOSFET_TOPIC, true) {};
-    MOSFET() : Output(MOSFET_PIN, MOSFET_TOPIC, true) {};
+    MOSFET(int pin, char* suffix) : defaultBrightness(suffix), Output(pin, MOSFET_TOPIC, suffix) {};
+    MOSFET(char* suffix) : defaultBrightness(suffix), Output(MOSFET_PIN, MOSFET_TOPIC, suffix) {};
+    MOSFET(int pin) : defaultBrightness(), Output(pin, MOSFET_TOPIC) {};
+    MOSFET() : defaultBrightness(), Output(MOSFET_PIN, MOSFET_TOPIC) {};
     void setup();
     void set(int state);
     void set(char* payload, char* topic);
@@ -27,6 +28,8 @@ class MOSFET: private Output {
     void linkRelay(Relay* relay);
   private:
     int *switchState = NULL;
+    int relayState;
+    Default defaultBrightness;
 };
 
 #endif
