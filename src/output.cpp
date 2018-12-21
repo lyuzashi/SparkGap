@@ -3,6 +3,7 @@
 #include "input.h"
 #include "mqtt.h"
 #include "mqtt-smarthome.h"
+#include "loop-queue.h"
 
 Output::Output(int pin, char* topic, char* suffix, bool invert) : Input(pin, topic, suffix, invert) {
   init();
@@ -31,12 +32,45 @@ void Output::init() {
       set(payload, topic);
     };
   });
+
+  LoopQueue::onEveryLoop(std::bind(&Output::update, this));
 };
 
 void Output::digitalWrite(uint8_t value) {
   ::digitalWrite(pin, invert ? !value : value);
 }
 
-void Output::analogWrite(int value) {
-  ::analogWrite(pin, invert ? PWMRANGE - value : value);
+// void Output::analogWrite(int value) {
+//   ::analogWrite(pin, invert ? PWMRANGE - value : value);
+// }
+
+float linear(float t) {
+  return t;
 }
+float easeInQuad(float t) {
+  return t * t;
+}
+float easeOutQuad(float t) {
+  return t * (2 - t);
+}
+float easeInOutQuad(float t) {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
+
+void Output::analogWrite(int value) {
+  start = (float)state;
+  destination = (float)value;
+  startTime = (float)millis();
+}
+
+void Output::update() {
+  float now = (float)millis();
+  float time = std::min((float)1, ((now - startTime) / transitionTime));
+  float timeFunction = easeOutQuad(time);
+  float val = ceil((timeFunction * (destination - start)) + start);
+  if (val == destination) {
+    // it's done
+  }
+  ::analogWrite(pin, invert ? PWMRANGE - val : val);
+}
+

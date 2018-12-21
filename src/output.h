@@ -15,6 +15,11 @@ class Output : public Input {
   private:
     char setTopic[50];
     void init();
+    void update();
+    float start;
+    float destination;
+    float startTime;
+    float transitionTime = 1000;
 };
 
 #endif
