@@ -13,14 +13,19 @@ class LoopQueue {
       int delay;
       uint32_t start;
     };
+    struct onEveryLoopHandler {
+      std::function<void()> method;
+      int frequency;
+    };
     static std::list<onLoopHandler> onLoopHandlers;
     static bool evalIfReady(onLoopHandler& handler);
   public:
     static void onLoop(std::function<void()> callback);
     static void onLoop(std::function<void()> callback, int delay);
     static void onEveryLoop(std::function<void()> callback);
+    static void onEveryLoop(std::function<void()> callback, int frequency);
     static void loop();
-    static std::vector<std::function<void()>> onEveryLoopHandlers;
+    static std::vector<onEveryLoopHandler> onEveryLoopHandlers;
 };
 
 #endif

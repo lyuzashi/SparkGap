@@ -3,6 +3,7 @@
 #include "channel.h"
 #include "mqtt.h"
 #include "mqtt-smarthome.h"
+#include "loop-queue.h"
 
 Input::Input(int pin, char* topic, char* suffix) : Channel(pin, topic, suffix) {
   init();
@@ -39,9 +40,11 @@ void Input::stateChange() {
   char buffer[16];
   MQTT::client.publish(statusTopic, get(buffer));
 
-  for(unsigned int i = 0; i < callbacks.size(); ++i) {
-    callbacks[i](state);
-  }
+  LoopQueue::onLoop([this]() {
+    for(unsigned int i = 0; i < callbacks.size(); ++i) {
+      callbacks[i](state);
+    }
+  });
 };
 
 void Input::stateChange(int newState) {

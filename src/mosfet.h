@@ -14,7 +14,7 @@
 // GPIO13	39  GREEN
 // GPIO14	40  WHITE
 
-class MOSFET: private Output {
+class MOSFET: public Output {
   public:
     MOSFET(int pin, char* suffix) : defaultBrightness(suffix), Output(pin, MOSFET_TOPIC, suffix) {};
     MOSFET(char* suffix) : defaultBrightness(suffix), Output(MOSFET_PIN, MOSFET_TOPIC, suffix) {};
@@ -24,7 +24,6 @@ class MOSFET: private Output {
     void set(int state);
     void set(char* payload, char* topic);
     char* get(char* output);
-    int state;
     void linkRelay(Relay* relay);
   private:
     int *switchState = NULL;

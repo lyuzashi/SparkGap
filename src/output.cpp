@@ -33,7 +33,9 @@ void Output::init() {
     };
   });
 
-  LoopQueue::onEveryLoop(std::bind(&Output::update, this));
+  // Update ≈ 24fps
+  LoopQueue::onEveryLoop(std::bind(&Output::update, this), 40);
+  transitioningState = state;
 };
 
 void Output::digitalWrite(uint8_t value) {
@@ -58,19 +60,20 @@ float easeInOutQuad(float t) {
 }
 
 void Output::analogWrite(int value) {
-  start = (float)state;
+  start = (float)transitioningState;
   destination = (float)value;
   startTime = (float)millis();
+  isTransitionining = true;
 }
 
 void Output::update() {
-  float now = (float)millis();
-  float time = std::min((float)1, ((now - startTime) / transitionTime));
-  float timeFunction = easeOutQuad(time);
-  float val = ceil((timeFunction * (destination - start)) + start);
-  if (val == destination) {
-    // it's done
+  if (isTransitionining) {
+    float now = (float)millis();
+    float time = std::min((float)1, ((now - startTime) / transitionTime));
+    float timeFunction = easeOutQuad(time);
+    float val = ceil((timeFunction * (destination - start)) + start);
+    transitioningState = (int)val;
+    ::analogWrite(pin, invert ? PWMRANGE - transitioningState : transitioningState);
+    isTransitionining = val != destination;
   }
-  ::analogWrite(pin, invert ? PWMRANGE - val : val);
 }
-

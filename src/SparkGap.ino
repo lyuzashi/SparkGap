@@ -86,9 +86,7 @@ void mqttState(int state) {
 }
 
 void setup() {
-  delay(5000);
   Serial.begin(115200);
-  Serial.print("Hello");
   wps.setCallback(wpsState);
   dnssd.setCallback(dnssdState);
   MQTT::instance.onStateChange(mqttState);
@@ -109,15 +107,12 @@ void setup() {
     button4.setCallback([] (int state) { if (state == PRESS) { relay4.set(!relay4.state); } });
   #endif
 
-  Serial.println("Core setup");
-
   #ifdef TYPE_MAGIC
     mosfetA.linkRelay(&relayA);
     mosfetB.linkRelay(&relayB);
     mosfetC.linkRelay(&relayC);
     button.setCallback([] (int state) {
       if (state == PRESS) {
-        Serial.println("Button");
         // If any relays are on, toggle to off, otherwise turn all on
         int newRelayState = (
           relayA.state == ON || 
@@ -129,10 +124,7 @@ void setup() {
         relayC.set(newRelayState);
       } 
     });
-    Serial.println("did magic");
   #endif
-
-  Serial.println("All setup");
 }
 
 void loop() {

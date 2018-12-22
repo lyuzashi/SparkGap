@@ -19,12 +19,12 @@ void MOSFET::setup() {
 }
 
 void MOSFET::set(int newState) {
-  // TODO check valid state
-  if(newState != state) {
+  int newStateLimited = std::min(PWMRANGE, std::max(0, newState));
+  if(newStateLimited != state) {
     if (*switchState != NULL && *switchState == ON) {
-      analogWrite(newState);
+      analogWrite(newStateLimited);
     }
-    state = newState;
+    state = newStateLimited;
     stateChange();
     relayState = state == 0 ? defaultBrightness.get() : state;
   }

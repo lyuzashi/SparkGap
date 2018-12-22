@@ -5,7 +5,7 @@
 #include "loop-queue.h"
 
 std::list<LoopQueue::onLoopHandler> LoopQueue::onLoopHandlers;
-std::vector<std::function<void()>> LoopQueue::onEveryLoopHandlers;
+std::vector<LoopQueue::onEveryLoopHandler> LoopQueue::onEveryLoopHandlers;
 
 void LoopQueue::onLoop(std::function<void()> callback) {
   onLoopHandler handler;
@@ -23,7 +23,17 @@ void LoopQueue::onLoop(std::function<void()> callback, int delay) {
 }
 
 void LoopQueue::onEveryLoop(std::function<void()> callback) {
-  onEveryLoopHandlers.push_back(callback);
+  onEveryLoopHandler handler;
+  handler.method = callback;
+  handler.frequency = 0;
+  onEveryLoopHandlers.push_back(handler);
+}
+
+void LoopQueue::onEveryLoop(std::function<void()> callback, int frequency) {
+  onEveryLoopHandler handler;
+  handler.method = callback;
+  handler.frequency = frequency;
+  onEveryLoopHandlers.push_back(handler);
 }
 
 bool LoopQueue::evalIfReady(onLoopHandler& handler) {
@@ -37,6 +47,10 @@ bool LoopQueue::evalIfReady(onLoopHandler& handler) {
 void LoopQueue::loop() {
   onLoopHandlers.remove_if(LoopQueue::evalIfReady);
   for(unsigned int i = 0; i < onEveryLoopHandlers.size(); ++i) {
-    onEveryLoopHandlers[i]();
+    if (onEveryLoopHandlers[i].frequency == 0 || 
+       (onEveryLoopHandlers[i].frequency > 0 && 
+        millis() % onEveryLoopHandlers[i].frequency == 0)) {
+       onEveryLoopHandlers[i].method();
+    }
   }
 }

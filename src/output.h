@@ -19,7 +19,9 @@ class Output : public Input {
     float start;
     float destination;
     float startTime;
-    float transitionTime = 1000;
+    float transitionTime = 500;
+    int transitioningState;
+    bool isTransitionining;
 };
 
 #endif
