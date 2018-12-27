@@ -4,6 +4,7 @@
 #include "mqtt.h"
 #include "mqtt-smarthome.h"
 #include "loop-queue.h"
+#include "../libs/ESP8266_new_pwm-master/pwm.c"
 
 Output::Output(int pin, char* topic, char* suffix, bool invert) : Input(pin, topic, suffix, invert) {
   init();

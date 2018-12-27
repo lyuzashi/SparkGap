@@ -13,7 +13,7 @@
 #define LED_TOPIC "led"
 #define LED_PIN 13
 
-class LED: private Output {
+class LED: public Output {
   public:
     LED(int pin, char* suffix) : Output(pin, LED_TOPIC, suffix, true) {};
     LED(char* suffix) : Output(LED_PIN, LED_TOPIC, suffix, true) {};

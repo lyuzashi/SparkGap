@@ -47,7 +47,6 @@ MQTT MQTT::instance;
   Motion motion;
 #endif
 
-
 void wpsState(int state) {
   if (state == WPS_CONNECTED) {
     dnssd.setup();
@@ -108,6 +107,7 @@ void setup() {
   #endif
 
   #ifdef TYPE_MAGIC
+    led.invert = false;
     mosfetA.linkRelay(&relayA);
     mosfetB.linkRelay(&relayB);
     mosfetC.linkRelay(&relayC);
